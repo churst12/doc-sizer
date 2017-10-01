@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top"> 
-    <script>
-     function doSomething() {
-        document.getElementById("text").innerHTML = "Paragraph changed.";
-     }
+<head>
+<base target="_top">
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<script>
+function lineAlert(words) {
+   var text = document.getElementById("text");
+   console.log(words);
+   text.innerHTML = words;
+}
+function doOverflow(value) {
+   if(value.checked) {
+      google.script.run.withSuccessHandler(lineAlert).printText(); //withSuccessHandler later when can retrieve lines to be edited
+   }
+   else {
+           
+   }
+}
+
     
-    <\script>
-  </head>
+</script>
+</head>
   <body>
-    <p> my first add-on </p>
-    
-    <button type="button" onclick="myFunction()">do something</button>
-    
+    <br><b> Tools </b><br>
+    <label><input id='overflow'type='checkbox' onclick='doOverflow(this);'>Line OverFlow</label>
+    <p id="text"> hello </p>
   </body>
 </html>
 

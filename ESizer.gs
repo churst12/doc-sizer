@@ -1,3 +1,4 @@
+
 function onOpen(e) {
   DocumentApp.getUi().createAddonMenu()
       .addItem('Start', 'showSidebar')
@@ -12,4 +13,11 @@ function showSidebar() {
   var ui = HtmlService.createHtmlOutputFromFile('Sidebar')
       .setTitle('Essay Sizer');
   DocumentApp.getUi().showSidebar(ui);
+}
+
+
+function printText() {
+  var document = DocumentApp.getActiveDocument();
+  return document.getBody().getText();
+  
 }
