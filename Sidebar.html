@@ -4,10 +4,19 @@
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 <script>
-function lineAlert(words) {
+function lineAlert(indents) {
+var text = [];
+   for(i=0; i<indents.length; i++) {
+      result = indents[i].split(/\r?\n/);
+      console.log(result);
+      for(j=0; j<result.lenth; j++) {
+         console.log(5);
+         text.push(result[j] + "***");
+      }
+   }
+   
    var text = document.getElementById("text");
-   console.log(words);
-   text.innerHTML = words;
+   text.innerHTML = indents;
 }
 function doOverflow(value) {
    if(value.checked) {
