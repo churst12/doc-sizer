@@ -1,5 +1,4 @@
 
-
 function onOpen(e) {
   DocumentApp.getUi().createAddonMenu()
       .addItem('Start', 'showSidebar')
@@ -18,11 +17,18 @@ function showSidebar() {
 
 function printText() {
   var document = DocumentApp.getActiveDocument();
-  var paragraphs = document.getBody().getParagraphs();
-  var pIndent = [];
-  for(i=0; i<paragraphs.length; i++){
-    var indent = paragraphs[i].getText();
-    pIndent.push(indent);
+  var data = document.getBlob().getDataAsString();
+  var lines = data.split('\n');
+  for(i=0; i<lines.length; i++){
+
   }
-  return pIndent;
+  return lines;
+}
+
+function punctReplace() {
+   var document = DocumentApp.getActiveDocument();
+   var text = document.getBody().editAsText();
+   var fSize = text.getFontSize();
+   return text.findText(".").getElement().asText();
+  
 }

@@ -4,23 +4,30 @@
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 <script>
-function lineAlert(indents) {
-var text = [];
-   for(i=0; i<indents.length; i++) {
-      result = indents[i].split(/\r?\n/);
-      console.log(result);
-      for(j=0; j<result.lenth; j++) {
-         console.log(5);
-         text.push(result[j] + "***");
-      }
+function lineAlert(lines) {
+var textLines = "";
+   for(i=0; i<lines.length; i++) {
+         textLines += lines[i] + "***";
    }
    
    var text = document.getElementById("text");
-   text.innerHTML = indents;
+   text.innerHTML = textLines;
+}
+function print( value) { 
+   var text = document.getElementById("text");
+   text.innerHTML = value;
 }
 function doOverflow(value) {
    if(value.checked) {
       google.script.run.withSuccessHandler(lineAlert).printText(); //withSuccessHandler later when can retrieve lines to be edited
+   }
+   else {
+           
+   }
+}
+function doReplace(value) {
+   if(value.checked) {
+      google.script.run.withSuccessHandler(print).punctReplace();
    }
    else {
            
@@ -33,6 +40,7 @@ function doOverflow(value) {
   <body>
     <br><b> Tools </b><br>
     <label><input id='overflow'type='checkbox' onclick='doOverflow(this);'>Line OverFlow</label>
+    <label><input id='replace'type='checkbox' onclick='doReplace(this);'>Puctuation Replace</label>
     <p id="text"> hello </p>
   </body>
 </html>
