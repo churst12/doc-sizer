@@ -14,6 +14,7 @@ var textLines = "";
    text.innerHTML = textLines;
 }
 function print( value) { 
+console.log(value);
    var text = document.getElementById("text");
    text.innerHTML = value;
 }
@@ -25,9 +26,17 @@ function doOverflow(value) {
            
    }
 }
-function doReplace(value) {
+function doPunctReplace(value) {
    if(value.checked) {
-      google.script.run.withSuccessHandler(print).punctReplace();
+      google.script.run.withSuccessHandler(print).punctReplace("[.]", 14);
+   }
+   else {
+      google.script.run.withSuccessHandler(print).punctReplace("[.]", 11);
+   }
+}
+function doWordReplace(value) {
+   if(value.checked) {
+      google.script.run.withSuccessHandler(print).wordReplace("/.");
    }
    else {
            
@@ -39,8 +48,9 @@ function doReplace(value) {
 </head>
   <body>
     <br><b> Tools </b><br>
-    <label><input id='overflow'type='checkbox' onclick='doOverflow(this);'>Line OverFlow</label>
-    <label><input id='replace'type='checkbox' onclick='doReplace(this);'>Puctuation Replace</label>
+    <label><input id='overflow'type='checkbox' onclick='doOverflow(this);'>Line OverFlow</label><br>
+    <label><input id='replace'type='checkbox' onclick='doPunctReplace(this);'>Puctuation Replace</label><br>
+    <label><input id='wordreplace'type='checkbox' onclick='doWordReplace(this);'>Word Replace</label><br>
     <p id="text"> hello </p>
   </body>
 </html>

@@ -25,10 +25,29 @@ function printText() {
   return lines;
 }
 
-function punctReplace() {
-   var document = DocumentApp.getActiveDocument();
-   var text = document.getBody().editAsText();
-   var fSize = text.getFontSize();
-   return text.findText(".").getElement().asText();
-  
+function punctReplace(findMe, fSize) {
+    var body = DocumentApp.getActiveDocument().getBody();
+    var foundElement = body.findText(findMe);
+
+    while (foundElement != null) {
+        // Get the text object from the element
+        var foundText = foundElement.getElement().asText();
+
+        // Where in the Element is the found text?
+        var start = foundElement.getStartOffset();
+        var end = foundElement.getEndOffsetInclusive();
+
+        // Change the font size
+        foundText.setFontSize(start, end, fSize);
+
+        // Find the next match
+        foundElement = body.findText(findMe, foundElement);
+    }
+  return foundText;
+}
+function wordReplace(findMe) {
+    var body = DocumentApp.getActiveDocument().getBody();
+    body.replaceText("don't", "do not");
+
+    return 5;
 }
