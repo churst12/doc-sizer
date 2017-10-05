@@ -22,14 +22,14 @@ function printText() {
   for(i=0; i<lines.length; i++){
 
   }
-  return lines;
+  return true;
 }
 
 function punctReplace(findMe, fSize) {
-    var body = DocumentApp.getActiveDocument().getBody();
-    var foundElement = body.findText(findMe);
+   var body = DocumentApp.getActiveDocument().getBody();
+   var foundElement = body.findText(findMe);
 
-    while (foundElement != null) {
+   while (foundElement != null) {
         // Get the text object from the element
         var foundText = foundElement.getElement().asText();
 
@@ -42,12 +42,11 @@ function punctReplace(findMe, fSize) {
 
         // Find the next match
         foundElement = body.findText(findMe, foundElement);
-    }
-  return foundText;
+   }
+   return true;
 }
 function wordReplace(findMe) {
     var body = DocumentApp.getActiveDocument().getBody();
-    body.replaceText("don't", "do not");
-
-    return 5;
+    body.replaceText("don’t", "do not");
+    return true;
 }

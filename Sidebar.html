@@ -13,34 +13,57 @@ var textLines = "";
    var text = document.getElementById("text");
    text.innerHTML = textLines;
 }
-function print( value) { 
-console.log(value);
-   var text = document.getElementById("text");
-   text.innerHTML = value;
-}
 function doOverflow(value) {
-   if(value.checked) {
-      google.script.run.withSuccessHandler(lineAlert).printText(); //withSuccessHandler later when can retrieve lines to be edited
+   var success = false;
+   if(value) {
+      google.script.run.printText(); //withSuccessHandler later when can retrieve lines to be edited
+      success = true;
    }
    else {
-           
+      success = true;
    }
+   return success;
 }
 function doPunctReplace(value) {
-   if(value.checked) {
-      google.script.run.withSuccessHandler(print).punctReplace("[.]", 14);
+   var success = false;
+   if(value) {
+      google.script.run.punctReplace("[.]", 14);
+      success = true;
    }
    else {
-      google.script.run.withSuccessHandler(print).punctReplace("[.]", 11);
+      google.script.run.punctReplace("[.]", 11);
+      success = true;
    }
+   return success;
 }
 function doWordReplace(value) {
-   if(value.checked) {
-      google.script.run.withSuccessHandler(print).wordReplace("/.");
+   var success = false;
+   if(value) {
+      google.script.run.wordReplace("/.");
+      success = true;
+      
    }
    else {
-           
+      success = true; 
    }
+   return success;
+}
+function apply() {
+  var overflowCheck = document.getElementById('overflow').checked;
+  var replaceCheck = document.getElementById('replace').checked;
+  var wordCheck = document.getElementById('wordreplace').checked;
+  var t1 = doOverflow(overflowCheck);
+  var t2 = doPunctReplace(replaceCheck);
+  var t3 = doWordReplace(wordCheck);
+  if( t1 && t2 && t3 ) {
+     var text = document.getElementById("text");
+     text.innerHTML = "Changes Applied.";
+  }
+  else {
+     var text = document.getElementById("text");
+     text.innerHTML = "Apply Unsuccessful";
+     console.log(t1 + " " + t2 +" " +  t3);
+  }
 }
 
     
@@ -48,10 +71,11 @@ function doWordReplace(value) {
 </head>
   <body>
     <br><b> Tools </b><br>
-    <label><input id='overflow'type='checkbox' onclick='doOverflow(this);'>Line OverFlow</label><br>
-    <label><input id='replace'type='checkbox' onclick='doPunctReplace(this);'>Puctuation Replace</label><br>
-    <label><input id='wordreplace'type='checkbox' onclick='doWordReplace(this);'>Word Replace</label><br>
-    <p id="text"> hello </p>
+    <label><input id='overflow'type='checkbox' >Line OverFlow</label><br>
+    <label><input id='replace'type='checkbox' >Puctuation Replace</label><br>
+    <label><input id='wordreplace'type='checkbox' >Word Replace</label><br>
+    <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>
+    <p align="center" id="text"> </p>
   </body>
 </html>
 
