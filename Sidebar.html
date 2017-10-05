@@ -1,8 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #e6e6e6;
+    color: #000000;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+</style>
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script>
 function lineAlert(lines) {
 var textLines = "";
@@ -71,11 +102,23 @@ function apply() {
 </head>
   <body>
     <br><b> Tools </b><br>
-    <label><input id='overflow'type='checkbox' >Line OverFlow</label><br>
-    <label><input id='replace'type='checkbox' >Puctuation Replace</label><br>
-    <label><input id='wordreplace'type='checkbox' >Word Replace</label><br>
+    <label><input id='overflow'type='checkbox' >Line OverFlow&nbsp&nbsp</label>
+    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+       <span class="tooltiptext" >information </span>
+    </p><br>
+    <label><input id='replace'type='checkbox' >Puctuation Replace&nbsp&nbsp</label>
+    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+       <span class="tooltiptext" >information </span>
+    </p><br>
+    <label><input id='wordreplace'type='checkbox' >Word Replace&nbsp&nbsp</label>
+    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+       <span class="tooltiptext" >information </span>
+    </p><br>
     <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>
     <p align="center" id="text"> </p>
+    
+    
+
   </body>
 </html>
 
