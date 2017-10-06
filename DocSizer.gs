@@ -10,7 +10,7 @@ function onInstall(e) {
 }
 
 function showSidebar() {
-  var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('Essay Sizer');
+  var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('DocSizer');
   DocumentApp.getUi().showSidebar(ui);
 }
 
@@ -45,8 +45,25 @@ function punctReplace(findMe, fSize) {
    }
    return true;
 }
-function wordReplace(findMe) {
+
+function wordExpand(findMe) {
     var body = DocumentApp.getActiveDocument().getBody();
     body.replaceText("don’t", "do not");
     return true;
 }
+
+function settingsPage() {
+   var ui = HtmlService.createHtmlOutputFromFile('Settings')
+   .setTitle('Settings')
+   .setWidth(300);
+   DocumentApp.getUi().showSidebar(ui);
+  
+}
+function cancelSettings() {
+   var ui = HtmlService.createHtmlOutputFromFile('Sidebar')
+   .setTitle('DocSizer')
+   .setWidth(300);
+   DocumentApp.getUi().showSidebar(ui);
+  
+}
+

@@ -30,6 +30,16 @@
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+ul li {
+    margin: 5px;
+    padding: 0px;
+}
+.settings {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+}
 </style>
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
@@ -67,10 +77,10 @@ function doPunctReplace(value) {
    }
    return success;
 }
-function doWordReplace(value) {
+function doWordExpand(value) {
    var success = false;
    if(value) {
-      google.script.run.wordReplace("/.");
+      google.script.run.wordExpand("/.");
       success = true;
       
    }
@@ -82,10 +92,10 @@ function doWordReplace(value) {
 function apply() {
   var overflowCheck = document.getElementById('overflow').checked;
   var replaceCheck = document.getElementById('replace').checked;
-  var wordCheck = document.getElementById('wordreplace').checked;
+  var wordCheck = document.getElementById('wordExpand').checked;
   var t1 = doOverflow(overflowCheck);
   var t2 = doPunctReplace(replaceCheck);
-  var t3 = doWordReplace(wordCheck);
+  var t3 = doWordExpand(wordCheck);
   if( t1 && t2 && t3 ) {
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
@@ -97,26 +107,45 @@ function apply() {
   }
 }
 
+function settings() {
+   google.script.run.settingsPage();
+}
     
 </script>
 </head>
   <body>
+  
     <br><b> Tools </b><br>
-    <label><input id='overflow'type='checkbox' >Line OverFlow&nbsp&nbsp</label>
-    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-       <span class="tooltiptext" >information </span>
-    </p><br>
-    <label><input id='replace'type='checkbox' >Puctuation Replace&nbsp&nbsp</label>
-    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-       <span class="tooltiptext" >information </span>
-    </p><br>
-    <label><input id='wordreplace'type='checkbox' >Word Replace&nbsp&nbsp</label>
-    <p class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-       <span class="tooltiptext" >information </span>
-    </p><br>
+    <ul style="list-style-type:none">
+    <li>
+       <input id='overflow'type='checkbox'>
+       <label>Line OverFlow&nbsp&nbsp</label>
+       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+          <span class="tooltiptext" >information </span>
+       </span>
+    </li>
+    <li>
+       <input id='replace'type='checkbox' >
+       <label>Puctuation Replace&nbsp&nbsp</label>
+       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+          <span class="tooltiptext" >information </span>
+       </span>
+    </li>
+    <li>
+       <input id='wordExpand'type='checkbox' >
+       <label>Word Expand&nbsp&nbsp</label>
+       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+          <span class="tooltiptext" >information </span>
+       </span>
+    </li>
+    </ul>
     <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>
     <p align="center" id="text"> </p>
-    
+    <span class="settings"> 
+       <button class="gray" type="button" onclick="settings();" id="settingsButton"> 
+          <i class="material-icons">settings</i>
+       </button>
+    </span>
     
 
   </body>
