@@ -9,29 +9,34 @@
        bottom: 15px;
        left: 15px;
     }
-    .rightBar {
-       
-       float:right;
-       width:50%
-       
-    
+    button.dropDown {
+       cursor: pointer;
+       font-size: 12px;
+       padding-top: 10px;
+       padding-bottom: 30px;
+       width: 100%;
+       text-align: left;
+       border: none;
+       outline: none;
     }
-    .leftBar {
-       
-       float:left;
-       width: 50%
-    
+    button.dropDown.active, button.dropDown:hover {
+       background-color: #000000;
     }
-    li {
-       margin-left: -30px;
+    div.panel {
+       padding: 0 18px;
+       background-color: white;
+       display: none;
     }
-    ul li:after {
-       content: "";
-       display: block;
-       height: 1px;
-       width: 90%;
-       margin: 10px;
-       background: #e6e6e6;
+    button.dropDown:after {
+       content: '\02795'; /* Unicode character for "plus" sign (+) */
+       font-size: 10px;
+
+       float: right;
+       margin-left: 5px;
+    }
+
+    button.dropDown.active:after {
+       content: "\2796"; /* Unicode character for "minus" sign (-) */
     }
     </style>
     <script> 
@@ -39,7 +44,7 @@
        google.script.run.cancelSettings();
     
     }
-    function addContraction {
+    function addContraction() {
     
     }
     
@@ -47,21 +52,45 @@
     </script>
   </head>
   <body>
-    <ul style="list-style-type:none">
-      <li>
-         <div class="leftBar">word expand</div>
-         
-         <div class="leftBar"><button class="gray" type="button" onClick="addContraction();" id="addContraction">Add</button></div>
-         
-         <div class="rightBar" id="" style="overflow-y:scroll; height:200px; width: 150px"> 
-            asd;lfkjasldj ;laks d;la ;lfasld f;alk d;la sdf;laj df;l sd;lkf asl;df ;alj dfl;a sd dfasdfasdasdadsf sd fsdf sdfg sdfg dfg sdfg sdfg sdf gsdfg sdfg sdfg sdfg sdfg sdfg sdfg dg sdfg sdfg sdfsg sdfg dsfg ksdfjhg klsd fgksdfklg slkdjfg lkjsdfg kljdhsfkljg lkjsdfg lkjsdfglkj hsdkljf glkjsdf lgk sdkfljg slkdfg kljdf gkljds lfkg sdkfs gkjlsdflkg lkdsfg klsjdf glk skfgasd fas fas fasf asf adsf asdfasf asd fdasf asf dasf adsf saf asf asd fsa fasf asdf asdf asdf as f
-         </div>
-      </li>
-    
-    </ul>
+     <button class="dropDown">Word Contractions</button>
+     <div class="panel">
+        <p>Lorem ipsum...</p>
+     </div>
+  
+     <button class="dropDown">Section 2</button>
+     <div class="panel">
+        <p>Lorem ipsum...</p>
+     </div>
+
+     <button class="dropDown">Section 3</button>
+     <div class="panel">
+        <p>Lorem ipsum...</p>
+     </div>
     <span>
        <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
     </span>
+    
+    <script>
+    var acc = document.getElementsByClassName("dropDown");
+    var i;
+    
+    for (i = 0; i < acc.length; i++) {
+       acc[i].onclick = function(){
+          /* Toggle between adding and removing the "active" class,
+          to highlight the button that controls the panel */
+          this.classList.toggle("active");
+    
+          /* Toggle between hiding and showing the active panel */
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+             panel.style.display = "none";
+          } 
+          else {
+             panel.style.display = "block";
+          }
+       }
+    }
+    </script>
   </body>
 </html>
 
