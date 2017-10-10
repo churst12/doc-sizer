@@ -67,3 +67,11 @@ function cancelSettings() {
   
 }
 
+function addWord() {
+  var html = HtmlService.createHtmlOutputFromFile('AddWord')
+      .setWidth(200)
+      .setHeight(100);
+  DocumentApp.getUi() // Or DocumentApp or FormApp.
+      .showModalDialog(html, 'My custom dialog');
+}
+
