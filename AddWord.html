@@ -1,10 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
     <base target="_top">
+    <style>
+    .bottomBar {
+       position: absolute;
+       bottom: 10px;
+    }
+    .leftBox {
+       float: left;
+       width: 50%;
+    }
+    .rightBox {
+       float: right;
+       width: 50%;
+    }
+    .wordInput {
+       margin-left: 20px;
+       margin-right: 20px
+    }
+    </style>
+    <script>
+
+    </script>
   </head>
   <body>
-    
+     <div class="leftBox">
+        <p align="center">Original Word</p>
+        <span class="wordInput"><input type="text" name="wordContracted" value="" ></span><br>
+     </div>
+     <div class="rightBox">
+        <p align="center">Replacement</p>
+        <span class="wordInput"><input type="text" name="wordExtended" value="" ></span><br>
+     </div>
+     <div class="bottomBar">
+        <button type="button" class="blue" onClick="confirmAdd();" id="addButton">Add</button>
+        <button type="button" onclick="google.script.host.close()" id="cancelButton">Cancel</button>
+     </div>
   </body>
 </html>
 
