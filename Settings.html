@@ -4,15 +4,15 @@
     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
     <base target="_top">
     <style>
-    #cancelSettings {
+    .bottomBar {
        position: absolute;
-       bottom: 15px;
-       left: 15px;
+       bottom: 10px;
+       left: 10px;
     }
     .rightContractions {
        float: right;
        width: 180px;
-       height: 100px;
+       height: 150px;
        margin-right: 10px;
        margin-top: 10px;
        margin-bottom: 10px;
@@ -21,16 +21,20 @@
     .leftContractions {
        float: left;
        width: 100px;
-       height: 100px;
+       height: 150px;
        margin-left: 10px;
        margin-top: 10px;
        margin-bottom: 10px;
     }
     .alignLeft {
        float: left;
+       width: 40%;
+       margin: 5px;
     }
     .alignRight {
        float: right;
+       width: 40%;
+       margin: 5px;
     }
     button.dropDown {
        cursor: pointer;
@@ -62,24 +66,30 @@
     }
     </style>
     <script> 
-    var words1 = ["can’t", "don’t", "wasn’t", "hasn’t"];
-    var words2 = ["can not", "do not", "was not", "has not"];
     function cancelSettings() {
        google.script.run.cancelSettings();
     
     }
     function addWord() {
-       google.script.run.addWord();
-}
+       google.script.run.addWordPrompt();
+    }
     
     function deleteContraction() {
     
     }
     
-    function displayWords() {
+    function showLeftWords(shortWords) {
+    console.log(shortWords);
+       document.getElementById('leftWords').innerHTML = shortWords.join(" <br> ");
+    }
     
-          document.getElementById('leftWords').innerHTML = words1.join(" <br> ");
-          document.getElementById('rightWords').innerHTML = words2.join(" <br> ");
+    function showRightWords(longWords) {
+       document.getElementById('rightWords').innerHTML = longWords.join(" <br> ");
+    }
+    
+    function displayWords() {
+       google.script.run.withSuccessHandler(showLeftWords).getWordsShortArray();
+       google.script.run.withSuccessHandler(showRightWords).getWordsLongArray();
     }
     displayWords();
     </script>
@@ -89,10 +99,11 @@
      <div class="panel">
         <div class="leftContractions">
            <button type="button" onClick="addWord();" id="addContraction">Add</button><br><br>
-           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button>
+           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button><br><br>
+           <button type="button" onClick="displayWords();" id="refreshList">Refresh</button><br>
         </div>
         <div class="rightContractions">
-           <div style="width: 100%; height: 100%; overflow-y: scroll;">
+           <div style="width: 100%; height: 100%; overflow: scroll; border:1px solid black;">
               <p class="alignLeft" id="leftWords"></p>
               <p class="alignRight" id="rightWords"></p>
               <script> displayWords(); </script>
@@ -109,8 +120,10 @@
      <div class="panel">
         <p>Lorem ipsum...</p>
      </div>
-    <span>
+     <p id="testOutput">  </p>
+    <span class = "bottomBar">
        <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
+       <button class="blue" type="button" onClick="confirmSettings();" id="confirmSettings">Save</button>
     </span>
     
     <script>

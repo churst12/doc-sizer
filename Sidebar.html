@@ -37,8 +37,8 @@ ul li {
 }
 .settings {
     position: absolute;
-    bottom: 15px;
-    left: 15px;
+    bottom: 10px;
+    left: 10px;
 }
 </style>
 <base target="_top">
@@ -78,16 +78,13 @@ function doPunctReplace(value) {
    return success;
 }
 function doWordExpand(value) {
-   var success = false;
    if(value) {
-      google.script.run.wordExpand("/.");
-      success = true;
-      
+      google.script.run.wordExpand();    
    }
    else {
-      success = true; 
+   
    }
-   return success;
+   return true;
 }
 function apply() {
   var overflowCheck = document.getElementById('overflow').checked;

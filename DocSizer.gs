@@ -1,4 +1,6 @@
 
+
+
 function onOpen(e) {
   DocumentApp.getUi().createAddonMenu()
       .addItem('Start', 'showSidebar')
@@ -10,11 +12,21 @@ function onInstall(e) {
 }
 
 function showSidebar() {
+  if(CacheService.getUserCache().get("wordsShort") == null) {
+    var wordsShort = "can’t,don’t,wasn’t,hasn’t";
+    CacheService.getUserCache().put("wordsShort", wordsShort);
+    var wordsLong = "can not,do not,was not,has not";
+    CacheService.getUserCache().put("wordsLong", wordsLong);
+  }
   var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('DocSizer');
   DocumentApp.getUi().showSidebar(ui);
 }
 
-
+function printOutput(value) {
+   
+  
+  
+}
 function printText() {
   var document = DocumentApp.getActiveDocument();
   var data = document.getBlob().getDataAsString();
@@ -46,9 +58,14 @@ function punctReplace(findMe, fSize) {
    return true;
 }
 
-function wordExpand(findMe) {
+function wordExpand() {
     var body = DocumentApp.getActiveDocument().getBody();
-    body.replaceText("don’t", "do not");
+    var wordsShort = getWordsShortArray();
+    var wordsLong = getWordsLongArray();
+    for(var i=0; i<wordsShort.length; i++) {
+       body.replaceText(wordsShort[i], wordsLong[i]);
+    }
+    
     return true;
 }
 
@@ -67,12 +84,52 @@ function cancelSettings() {
   
 }
 
-function addWord() {
-  var html = HtmlService.createHtmlOutputFromFile('AddWord')
+function addWordPrompt() {
+   var html = HtmlService.createHtmlOutputFromFile('AddWord')
       .setWidth(400)
       .setHeight(140);
-  DocumentApp.getUi() // Or DocumentApp or FormApp.
+   DocumentApp.getUi() // Or DocumentApp or FormApp.
       .showModalDialog(html, ' ');
 }
+
+function getWordsShortArray() {
+   var wordsShortValue = CacheService.getUserCache().get("wordsShort");
+   var wordsShortArray = wordsShortValue.split(',');
+   return wordsShortArray;
+  
+}
+
+function getWordsLongArray() {
+   var wordsLongKey = CacheService.getUserCache().get("wordsLong");
+   var wordsLongArray = wordsLongKey.split(',');
+   return wordsLongArray;
+}
+
+function addWord(wordShort, wordLong) {
+   var wordsShortArray = getWordsShortArray();
+   var wordsLongArray = getWordsLongArray();
+   var included = false;
+   for(var i=0; i<wordsShortArray.length; i++) {
+     if(wordsShortArray[i].equals(wordShort)) {
+         included = true;
+         Logger.log("duplicate word contraction has been requested");
+     }
+   }
+   if(included != true) {
+      wordsShortArray.push(wordShort); 
+      wordsLongArray.push(wordLong);
+   }
+   var wordShortString = wordsShortArray.join(",");
+   var wordLongString = wordsLongArray.join(",");
+   cache = CacheService.getUserCache();
+   cache.remove("wordsShort");
+   cache.remove("wordsLong");
+   cache.put("wordsShort", wordShortString);
+   cache.put("wordsLong", wordLongString);
+   Logger.log(cache.get("wordsShort"));
+}
+
+
+
 
 
