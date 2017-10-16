@@ -13,9 +13,9 @@ function onInstall(e) {
 
 function showSidebar() {
   if(CacheService.getUserCache().get("wordsShort") == null) {
-    var wordsShort = "can’t,don’t,wasn’t,hasn’t";
+    var wordsShort = "isn’t,aren’t,wasn’t,weren’t,haven’t,hasn’t,hadn’t,won’t,wouldn’t,don’t,doesn’t,didn’t,can’t,couldn’t,shouldn’t,mightn’t,mustn’t,I’m,I’ll,I’d,I’ve,I’d,you’re,you’ll,you’d,you’ve,you’d,he’ll,she’ll,it’s,it’ll,we’re,we’ll,we’ve,they’re,they’ll,they’ve,that’s,that’ll,who’s,who’ll,what’s,where’ll,when’s,when’ll,why’ll,why’d,how’s,how’d,how’ll";
     CacheService.getUserCache().put("wordsShort", wordsShort);
-    var wordsLong = "can not,do not,was not,has not";
+    var wordsLong = "is not,are not,was not,were not,have not,has not,had not,will not,would not,do not,does not,did not,can not,could not,should not,might not,must not,I am,I will,I would,I have,I had,you are,you will,you would,you have,you had,he will,she will,it is,it will,we are,we will,we have,they are,they will,they have,that is,that will,who is,who will,what has,where will,when is,when will,why will,why would,how is,how would,how will";
     CacheService.getUserCache().put("wordsLong", wordsLong);
   }
   var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('DocSizer');
@@ -71,7 +71,7 @@ function wordExpand() {
 
 function settingsPage() {
    var ui = HtmlService.createHtmlOutputFromFile('Settings')
-   .setTitle('Settings')
+   .setTitle('DocSizer - Settings')
    .setWidth(300);
    DocumentApp.getUi().showSidebar(ui);
   
@@ -126,7 +126,6 @@ function addWord(wordShort, wordLong) {
    cache.remove("wordsLong");
    cache.put("wordsShort", wordShortString);
    cache.put("wordsLong", wordLongString);
-   Logger.log(cache.get("wordsShort"));
 }
 
 
