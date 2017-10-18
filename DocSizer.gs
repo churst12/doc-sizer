@@ -12,16 +12,25 @@ function onInstall(e) {
 }
 
 function showSidebar() {
-  if(CacheService.getUserCache().get("wordsShort") == null) {
+  var cache = CacheService.getUserCache();
+  cache.remove("wordsShort");
+  cache.remove("wordsLong");
+  //if(CacheService.getUserCache().get("wordsShort") == null) {
+   
     var wordsShort = "isn’t,aren’t,wasn’t,weren’t,haven’t,hasn’t,hadn’t,won’t,wouldn’t,don’t,doesn’t,didn’t,can’t,couldn’t,shouldn’t,mightn’t,mustn’t,I’m,I’ll,I’d,I’ve,I’d,you’re,you’ll,you’d,you’ve,you’d,he’ll,she’ll,it’s,it’ll,we’re,we’ll,we’ve,they’re,they’ll,they’ve,that’s,that’ll,who’s,who’ll,what’s,where’ll,when’s,when’ll,why’ll,why’d,how’s,how’d,how’ll";
     CacheService.getUserCache().put("wordsShort", wordsShort);
     var wordsLong = "is not,are not,was not,were not,have not,has not,had not,will not,would not,do not,does not,did not,can not,could not,should not,might not,must not,I am,I will,I would,I have,I had,you are,you will,you would,you have,you had,he will,she will,it is,it will,we are,we will,we have,they are,they will,they have,that is,that will,who is,who will,what has,where will,when is,when will,why will,why would,how is,how would,how will";
     CacheService.getUserCache().put("wordsLong", wordsLong);
-  }
+  //}
   var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('DocSizer');
   DocumentApp.getUi().showSidebar(ui);
 }
 
+function alphabetize(array) {
+   
+  
+  
+}
 function printOutput(value) {
    
   
@@ -69,6 +78,17 @@ function wordExpand() {
     return true;
 }
 
+function wordContract() {
+    var body = DocumentApp.getActiveDocument().getBody();
+    var wordsShort = getWordsShortArray();
+    var wordsLong = getWordsLongArray();
+    for(var i=0; i<wordsLong.length; i++) {
+       body.replaceText(wordsLong[i], wordsShort[i]);
+    }
+    
+    return true;
+}
+
 function settingsPage() {
    var ui = HtmlService.createHtmlOutputFromFile('Settings')
    .setTitle('DocSizer - Settings')
@@ -95,19 +115,23 @@ function addWordPrompt() {
 function getWordsShortArray() {
    var wordsShortValue = CacheService.getUserCache().get("wordsShort");
    var wordsShortArray = wordsShortValue.split(',');
+  Logger.log(wordsShortArray.length);
    return wordsShortArray;
   
 }
 
 function getWordsLongArray() {
-   var wordsLongKey = CacheService.getUserCache().get("wordsLong");
-   var wordsLongArray = wordsLongKey.split(',');
+   var wordsLongValue = CacheService.getUserCache().get("wordsLong");
+   var wordsLongArray = wordsLongValue.split(',');
+  Logger.log(wordsLongArray.length);
    return wordsLongArray;
 }
 
 function addWord(wordShort, wordLong) {
    var wordsShortArray = getWordsShortArray();
    var wordsLongArray = getWordsLongArray();
+
+  
    var included = false;
    for(var i=0; i<wordsShortArray.length; i++) {
      if(wordsShortArray[i].equals(wordShort)) {
@@ -121,9 +145,14 @@ function addWord(wordShort, wordLong) {
    }
    var wordShortString = wordsShortArray.join(",");
    var wordLongString = wordsLongArray.join(",");
+  
    cache = CacheService.getUserCache();
+   Logger.log("before removing cache, cache length: " + cache.get("wordsShort").length);
+   Logger.log("before removing cache, cache length: " + cache.get("wordsLong").length);
    cache.remove("wordsShort");
    cache.remove("wordsLong");
+   Logger.log("putting into cache, short length: " + wordShortString.length);
+   Logger.log("putting into cache, long length: " + wordLongString.length);
    cache.put("wordsShort", wordShortString);
    cache.put("wordsLong", wordLongString);
 }

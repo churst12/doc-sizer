@@ -86,21 +86,34 @@ function doWordExpand(value) {
    }
    return true;
 }
+
+function doWordContract(value) {
+   if(value) {
+      google.script.run.wordContract();    
+   }
+   else {
+   
+   }
+   return true;
+}
+
 function apply() {
   var overflowCheck = document.getElementById('overflow').checked;
   var replaceCheck = document.getElementById('replace').checked;
-  var wordCheck = document.getElementById('wordExpand').checked;
+  var wordExpandCheck = document.getElementById('wordExpand').checked;
+  var wordContractCheck = document.getElementById('wordContract').checked;
   var t1 = doOverflow(overflowCheck);
   var t2 = doPunctReplace(replaceCheck);
-  var t3 = doWordExpand(wordCheck);
-  if( t1 && t2 && t3 ) {
+  var t3 = doWordExpand(wordExpandCheck);
+  var t4 = doWordContract(wordContractCheck);
+  if( t1 && t2 && t3 && t4) {
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
   }
   else {
      var text = document.getElementById("text");
      text.innerHTML = "Apply Unsuccessful";
-     console.log(t1 + " " + t2 +" " +  t3);
+     console.log(t1 + " " + t2 +" " +  t3 + "" + t4);
   }
 }
 
@@ -131,6 +144,13 @@ function settings() {
     <li>
        <input id='wordExpand'type='checkbox' >
        <label>Word Expand&nbsp&nbsp</label>
+       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+          <span class="tooltiptext" >information </span>
+       </span>
+    </li>
+    <li>
+       <input id='wordContract'type='checkbox' >
+       <label>Word Contractor&nbsp&nbsp</label>
        <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
           <span class="tooltiptext" >information </span>
        </span>

@@ -26,6 +26,11 @@
        margin-top: 10px;
        margin-bottom: 10px;
     }
+    .addWord {
+       width: 100%;
+       height: 100px;
+       float: left;
+    }
     .alignLeft {
        float: left;
        width: 40%;
@@ -71,36 +76,54 @@
     
     }
     function addWord() {
-       google.script.run.addWordPrompt();
+          var wordShort = document.getElementById("wordContracted").value;
+          var wordLong = document.getElementById("wordExtended").value;
+          console.log("wordShort: " + wordShort + "  wordLong: " + wordLong );
+          if((wordShort.length == 0) || (wordLong.length == 0 )) {
+             var errorElement = document.getElementById("errorMessage");
+             errorElement.innerHTML = "*please fill both fields";
+          }
+          else {
+             google.script.run.addWord(wordShort, wordLong);
+
+          }
     }
     
     function deleteContraction() {
     
     }
     
-    function showLeftWords(shortWords) {
+    function showShortWords(shortWords) {
     console.log(shortWords);
        document.getElementById('leftWords').innerHTML = shortWords.join(" <br> ");
     }
     
-    function showRightWords(longWords) {
+    function showLongWords(longWords) {
+    console.log(longWords);
        document.getElementById('rightWords').innerHTML = longWords.join(" <br> ");
     }
     
     function displayWords() {
-       google.script.run.withSuccessHandler(showLeftWords).getWordsShortArray();
-       google.script.run.withSuccessHandler(showRightWords).getWordsLongArray();
+       google.script.run.withSuccessHandler(showShortWords).getWordsShortArray();
+       google.script.run.withSuccessHandler(showLongWords).getWordsLongArray();
     }
-    displayWords();
+    
+    function confirmSettings() {
+       document.getElementById("wordContracted").value = "";
+       document.getElementById("wordExtended").value = "";
+       document.getElementById("message").innerHTML = " Changes Saved.";
+       document.getElementById("errorMessage").innerHTML = "";
+       
+       displayWords();
+    
+    }
     </script>
   </head>
   <body>
      <button class="dropDown">Word Contractions</button>
      <div class="panel">
         <div class="leftContractions">
-           <button type="button" onClick="addWord();" id="addContraction">Add</button><br><br>
-           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button><br><br>
-           <button type="button" onClick="displayWords();" id="refreshList">Refresh</button><br>
+           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button>
         </div>
         <div class="rightContractions">
            <div style="width: 100%; height: 100%; overflow: scroll; border:1px solid black;">
@@ -108,6 +131,13 @@
               <p class="alignRight" id="rightWords"></p>
               <script> displayWords(); </script>
            </div>
+        </div>
+        <div class="addWord">
+           <button type="button" onClick="addWord();" id="addContraction" style="margin-left:10px;">Add</button>
+           <span class="wordInput"><input type="text" id="wordContracted" value="" style="float:right; margin-right:35px"></span><br>
+           <span class="wordInput"><input type="text" id="wordExtended" value="" style="float:right; margin-right:35px"></span><br>
+           <p id="errorMessage" style="color:red;"></p>
+           
         </div>
      </div>
   
@@ -124,12 +154,12 @@
     <span class = "bottomBar">
        <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
        <button class="blue" type="button" onClick="confirmSettings();" id="confirmSettings">Save</button>
+       <span id="message"></span>
     </span>
     
     <script>
     var acc = document.getElementsByClassName("dropDown");
     var i;
-    
     for (i = 0; i < acc.length; i++) {
        acc[i].onclick = function(){
           /* Toggle between adding and removing the "active" class,
