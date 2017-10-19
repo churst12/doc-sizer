@@ -31,6 +31,40 @@
     visibility: visible;
 }
 
+#slidecontainer {
+    width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 80%; /* Full-width */
+    height: 10px;
+    border-radius: 5px;
+    background: #d8d8d8;
+    outline: none; /* Remove outline */
+}
+
+/* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 15px; /* Set a specific slider handle width */
+    height: 15px;
+    border-radius: 50%; 
+    background: #999999; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
 ul li {
     margin: 5px;
     padding: 0px;
@@ -97,6 +131,14 @@ function doWordContract(value) {
    return true;
 }
 
+function doLineSpacing(value) {
+   if(value) {
+      google.script.run.lineSpacing(value);
+   }
+   return true;
+
+}
+
 function apply() {
   var overflowCheck = document.getElementById('overflow').checked;
   var replaceCheck = document.getElementById('replace').checked;
@@ -106,6 +148,8 @@ function apply() {
   var t2 = doPunctReplace(replaceCheck);
   var t3 = doWordExpand(wordExpandCheck);
   var t4 = doWordContract(wordContractCheck);
+  
+  doLineSpacing(parseFloat(document.getElementById("myRange").value));
   if( t1 && t2 && t3 && t4) {
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
@@ -129,7 +173,7 @@ function settings() {
     <ul style="list-style-type:none">
     <li>
        <input id='overflow'type='checkbox'>
-       <label>Line OverFlow&nbsp&nbsp</label>
+       <label>Line OverFlow&nbsp&nbsp</label> 
        <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
           <span class="tooltiptext" >information </span>
        </span>
@@ -154,6 +198,21 @@ function settings() {
        <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
           <span class="tooltiptext" >information </span>
        </span>
+    </li>
+    <li>
+       <div id="slidecontainer">
+          <input type="range" min="1" max="3" value="1" class="slider" id="myRange" step="0.01">
+          <span id="demo"></span>
+       </div>
+       <script>
+          var slider = document.getElementById("myRange");
+          var output = document.getElementById("demo");
+          output.innerHTML = slider.value;
+       
+          slider.oninput = function() {
+             output.innerHTML = this.value;
+          }
+       </script>
     </li>
     </ul>
     <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>

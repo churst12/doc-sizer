@@ -157,6 +157,16 @@ function addWord(wordShort, wordLong) {
    cache.put("wordsLong", wordLongString);
 }
 
+function lineSpacing(value) {
+  var body = DocumentApp.getActiveDocument().getBody();
+  var paragraphs = body.getParagraphs();
+  for(i=0; i<paragraphs.length; i++) {
+     //Logger.log(paragraphs[i]);
+     paragraphs[i].setLineSpacing(value);
+  }
+  
+  
+}
 
 
 
