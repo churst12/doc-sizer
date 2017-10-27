@@ -36,15 +36,38 @@ function printOutput(value) {
   
   
 }
-function printText() {
-  var document = DocumentApp.getActiveDocument();
-  var data = document.getBlob().getDataAsString();
+function getOverflow() {
+  
   var lines = data.split('\n');
   for(i=0; i<lines.length; i++){
 
   }
   return true;
 }
+
+function getParagraphs() {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var paragraphs = body.getParagraphs(); 
+   return paragraphs;
+}
+
+function getPString(pNum) {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var paragraphs = body.getParagraphs();
+   var pString = paragraphs[pNum].getText();
+   return pString;
+  
+  
+}
+
+function getMargin() {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var rightM = body.getMarginLeft();
+   var leftM = body.getMarginRight();
+   return rightM + leftM;
+  
+}
+
 
 function punctReplace(findMe, fSize) {
    var body = DocumentApp.getActiveDocument().getBody();
@@ -154,7 +177,11 @@ function addWord(wordShort, wordLong) {
    Logger.log("putting into cache, short length: " + wordShortString.length);
    Logger.log("putting into cache, long length: " + wordLongString.length);
    cache.put("wordsShort", wordShortString);
-   cache.put("wordsLong", wordLongString);
+   cache
+   
+   
+   
+   .put("wordsLong", wordLongString);
 }
 
 function lineSpacing(value) {
@@ -167,6 +194,24 @@ function lineSpacing(value) {
   
   
 }
+
+function showText() {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var paragraphs = body.getParagraphs();
+
+  return paragraphs[0].getIndentStart();
+  
+  
+}
+
+function changeFont(font, fontSize) {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var text = body.editAsText();
+   text.setFontFamily(font);
+   text.setFontSize(parseInt(fontSize));
+  
+}
+
 
 
 

@@ -65,6 +65,12 @@
     cursor: pointer; /* Cursor on hover */
 }
 
+#hiddenDiv {
+   display: none;
+
+
+}
+
 ul li {
     margin: 5px;
     padding: 0px;
@@ -74,11 +80,21 @@ ul li {
     bottom: 10px;
     left: 10px;
 }
+
+.arial {
+  font-family: 'Arial';
+    
+}
+
+.tmr {
+  font-family: 'Times New Roman';
+}
+
 </style>
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script>
+<script  >
 function lineAlert(lines) {
 var textLines = "";
    for(i=0; i<lines.length; i++) {
@@ -88,17 +104,60 @@ var textLines = "";
    var text = document.getElementById("text");
    text.innerHTML = textLines;
 }
+function paragraphOverflow(paragraphs) {
+   for(var i=0; i<paragraphs.length; i++) {
+      google.script.run.withSuccessHandler(takePString).getPString(i);
+   
+   }
+}
+
+function takePString(pString) {
+   google.script.run.withSuccessHandler(setHiddenWidth).getMargin();
+   var fontSize = document.getElementById('fontSize').value;
+   var font = document.getElementById('fontMenu').value;
+   if(font === "Times New Roman") {
+      font = 'tmr';
+   }
+   var hiddenDiv = document.getElementById('hiddenDiv');
+   console.log(font);
+ 
+   //hiddenDiv.classList.add(font);
+   hiddenDiv.style.fontSize = fontSize + 'pt';
+   hiddenDiv.style.fontSizeFamily = font;
+   hiddenDiv.innerHTML = pString;
+   
+   var height = hiddenDiv.offsetHeight;
+   console.log(height);
+
+}
+
 function doOverflow(value) {
    var success = false;
    if(value) {
-      google.script.run.printText(); //withSuccessHandler later when can retrieve lines to be edited
+      google.script.run.withSuccessHandler(paragraphOverflow).getParagraphs(); //withSuccessHandler later when can retrieve lines to be edited
       success = true;
    }
    else {
       success = true;
    }
-   return success;
+   return true;
 }
+
+function setHiddenWidth(margin) {
+   var width = 468;
+   width = width + margin;
+   document.getElementById('hiddenDiv').style.width = width + "pt";
+}
+
+function setHiddenFont(fontArray) {
+   var font = fontArray[0];
+   var fontSize = fontArray[1];
+   console.log(font);
+   
+   //document.getElementById('hiddenDiv').style.width = width + "pt";
+}
+
+
 function doPunctReplace(value) {
    var success = false;
    if(value) {
@@ -139,11 +198,21 @@ function doLineSpacing(value) {
 
 }
 
+function doFont() {
+   var font = document.getElementById('fontMenu').value;
+   console.log(font);
+   var fontSize = document.getElementById('fontSize').value;
+   console.log(fontSize);
+   google.script.run.changeFont(font, fontSize);
+
+}
+
 function apply() {
   var overflowCheck = document.getElementById('overflow').checked;
   var replaceCheck = document.getElementById('replace').checked;
   var wordExpandCheck = document.getElementById('wordExpand').checked;
   var wordContractCheck = document.getElementById('wordContract').checked;
+  var t0 = doFont();
   var t1 = doOverflow(overflowCheck);
   var t2 = doPunctReplace(replaceCheck);
   var t3 = doWordExpand(wordExpandCheck);
@@ -164,12 +233,52 @@ function apply() {
 function settings() {
    google.script.run.settingsPage();
 }
-    
+
+function showString() {
+   google.script.run.withSuccessHandler(displayText).showText();
+}
+
+function displayText(text) {
+   var show = document.getElementById("showText");
+   show.innerHTML = text;
+
+
+}
+  
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function showDrop() {
+    document.getElementById("fontDropdown").classList.toggle("show");
+}  
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 </script>
 </head>
   <body>
   
     <br><b> Tools </b><br>
+    <select id="fontMenu">
+       <option value="Arial">Arial</option>
+       <option value="Times New Roman">Times New Roman</option>
+    </select>
+    
+    <input id="fontSize" type="text"><br>
+    
+    
+    
     <ul style="list-style-type:none">
     <li>
        <input id='overflow'type='checkbox'>
@@ -215,8 +324,13 @@ function settings() {
        </script>
     </li>
     </ul>
+    
+    <div id="hiddenDiv">
+       
+    </div>
+    
     <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>
-    <p align="center" id="text"> </p>
+    <p align="center" id="text"> </p><p id="showText"> </p>
     <span class="settings"> 
        <button class="gray" type="button" onclick="settings();" id="settingsButton"> 
           <i class="material-icons">settings</i>

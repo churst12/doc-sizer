@@ -111,6 +111,7 @@
     function confirmSettings() {
        document.getElementById("wordContracted").value = "";
        document.getElementById("wordExtended").value = "";
+       document.getElementById("textInQuotes").value
        document.getElementById("message").innerHTML = " Changes Saved.";
        document.getElementById("errorMessage").innerHTML = "";
        
@@ -131,6 +132,10 @@
               <p class="alignRight" id="rightWords"></p>
               <script> displayWords(); </script>
            </div>
+        </div>
+        <div style="padding: 10px;">
+           <input id='textInQuotes'type='checkbox'>
+           <label>Don't change text in quotes&nbsp&nbsp</label>
         </div>
         <div class="addWord">
            <button type="button" onClick="addWord();" id="addContraction" style="margin-left:10px;">Add</button>
