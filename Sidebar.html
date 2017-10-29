@@ -122,7 +122,9 @@ function paragraphOverflow(paragraphs) {
    }
 }
 
-function takePString(pString) {
+function takePString(pArray) {
+   var pString = pArray[0];
+   var pNum = pArray[1];
 console.log(pString);
    var fontSize = document.getElementById('fontSize').value;
    var font = document.getElementById('fontMenu').value;
@@ -160,6 +162,7 @@ console.log("height2: " + height2);
          height3 = hiddenDiv.offsetHeight;
       }
 console.log("counter: " + counter);
+      google.script.run.lineOverflow(pNum, counter);
    }
    
 

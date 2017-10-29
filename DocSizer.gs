@@ -55,7 +55,8 @@ function getPString(pNum) {
    var body = DocumentApp.getActiveDocument().getBody();
    var paragraphs = body.getParagraphs();
    var pString = paragraphs[pNum].getText();
-   return pString;
+   var pArray = [pString, pNum];
+   return pArray;
   
   
 }
@@ -187,7 +188,7 @@ function addWord(wordShort, wordLong) {
 function lineSpacing(value) {
   var body = DocumentApp.getActiveDocument().getBody();
   var paragraphs = body.getParagraphs();
-  for(i=0; i<paragraphs.length; i++) {
+  for(var i=0; i<paragraphs.length; i++) {
      //Logger.log(paragraphs[i]);
      paragraphs[i].setLineSpacing(value);
   }
@@ -200,8 +201,6 @@ function showText() {
    var paragraphs = body.getParagraphs();
 
   return paragraphs[0].getIndentStart();
-  
-  
 }
 
 function changeFont(font, fontSize) {
@@ -211,6 +210,25 @@ function changeFont(font, fontSize) {
    text.setFontSize(parseInt(fontSize));
   
 }
+
+function lineOverflow(pNum, counter) {
+   var body = DocumentApp.getActiveDocument().getBody();
+   var paragraphs = body.getParagraphs();
+   var notifier = "";
+   for(var i=1; i<counter; i++) {
+      notifier = notifier + '@';
+   }
+   paragraphs[pNum].appendText(notifier);
+   var wordRange = paragraphs[pNum].findText(notifier);
+   var wordsAppended = wordRange.getElement().asText();
+   wordsAppended.setBackgroundColor('#ffff00');
+}
+
+
+
+
+
+
 
 
 
