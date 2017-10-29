@@ -2,7 +2,15 @@
 <html>
 <head>
 <style>
-/* Tooltip container */
+/*
+body {
+  overflow-x: hidden !important;
+}
+body > * {
+  max-width: 100% !important;
+}
+
+ Tooltip container */
 .tooltip {
     position: relative;
     display: inline-block;
@@ -66,7 +74,10 @@
 }
 
 #hiddenDiv {
-   display: none;
+   margin-left: 300px;
+   position: absolute;
+   display: block;
+   background: #f1f1f1
 
 
 }
@@ -112,28 +123,53 @@ function paragraphOverflow(paragraphs) {
 }
 
 function takePString(pString) {
-   google.script.run.withSuccessHandler(setHiddenWidth).getMargin();
+console.log(pString);
    var fontSize = document.getElementById('fontSize').value;
    var font = document.getElementById('fontMenu').value;
    if(font === "Times New Roman") {
       font = 'tmr';
    }
    var hiddenDiv = document.getElementById('hiddenDiv');
-   console.log(font);
- 
+   //document.getElementById('hiddenDiv').style.width = 468 + "pt";
    //hiddenDiv.classList.add(font);
    hiddenDiv.style.fontSize = fontSize + 'pt';
    hiddenDiv.style.fontSizeFamily = font;
-   hiddenDiv.innerHTML = pString;
    
+   hiddenDiv.innerHTML = pString;
+  
    var height = hiddenDiv.offsetHeight;
-   console.log(height);
+   if(height === 0) {
+      height = 18;
+   }
+console.log("height: " + height);
+   var height2 = height;
+   var pString2 = pString;
+   pString2 = pString + '@@@@@@@@';
+   hiddenDiv.innerHTML = pString2;
+   height2 = hiddenDiv.offsetHeight;
+console.log("height2: " + height2);
+   if(height2 > height) {
+      hiddenDiv.innerHTML = pString;
+      var height3 = height;
+      var pString3 = pString;
+      var counter = 0;
+      while(height3 === height) {
+         pString3 += '@';
+         counter = counter + 1;
+         hiddenDiv.innerHTML = pString3;
+         height3 = hiddenDiv.offsetHeight;
+      }
+console.log("counter: " + counter);
+   }
+   
+
 
 }
 
 function doOverflow(value) {
    var success = false;
    if(value) {
+      google.script.run.withSuccessHandler(setHiddenWidth).getMargin();
       google.script.run.withSuccessHandler(paragraphOverflow).getParagraphs(); //withSuccessHandler later when can retrieve lines to be edited
       success = true;
    }
@@ -144,8 +180,10 @@ function doOverflow(value) {
 }
 
 function setHiddenWidth(margin) {
-   var width = 468;
-   width = width + margin;
+   var width = 612;
+   width = width - margin;
+   console.log("margin: " + margin);
+   console.log("new width: " + width);
    document.getElementById('hiddenDiv').style.width = width + "pt";
 }
 
@@ -275,7 +313,7 @@ window.onclick = function(event) {
        <option value="Times New Roman">Times New Roman</option>
     </select>
     
-    <input id="fontSize" type="text"><br>
+    <input id="fontSize" type="text" value ="12"><br>
     
     
     
@@ -310,7 +348,7 @@ window.onclick = function(event) {
     </li>
     <li>
        <div id="slidecontainer">
-          <input type="range" min="1" max="3" value="1" class="slider" id="myRange" step="0.01">
+          <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
           <span id="demo"></span>
        </div>
        <script>
