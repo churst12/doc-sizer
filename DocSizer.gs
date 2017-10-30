@@ -102,6 +102,20 @@ function wordExpand() {
     return true;
 }
 
+function wordExpandWithoutQuotes() {
+    var body = DocumentApp.getActiveDocument().getBody();
+    var wordsShort = getWordsShortArray();
+    var wordsLong = getWordsLongArray();
+    for(var i=0; i<wordsShort.length; i++) {
+       var leftQRange = body.findText('“');
+       var rightQRange = body.findText('”');
+      Logger.log("leftRange: " + leftQRange.getStartOffset())
+      // body.replaceText(wordsShort[i], wordsLong[i]);
+    }
+    
+    return true;
+}
+
 function wordContract() {
     var body = DocumentApp.getActiveDocument().getBody();
     var wordsShort = getWordsShortArray();
@@ -223,6 +237,25 @@ function lineOverflow(pNum, counter) {
    var wordsAppended = wordRange.getElement().asText();
    wordsAppended.setBackgroundColor('#ffff00');
 }
+
+function setWordCache( value) {
+  
+  
+}
+
+function setOverflowCache(value) {
+   cache =  CacheService.getUserCache();
+   cache.remove("overflowSpacing");
+   cache.put("overflowSpacing", value);
+  
+  
+}
+
+function getOverflowCache() {
+  cache =  CacheService.getUserCache();
+  return cache.get("overflowSpacing"); 
+}
+
 
 
 

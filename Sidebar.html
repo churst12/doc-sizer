@@ -123,9 +123,9 @@ function paragraphOverflow(paragraphs) {
 }
 
 function takePString(pArray) {
+
    var pString = pArray[0];
    var pNum = pArray[1];
-console.log(pString);
    var fontSize = document.getElementById('fontSize').value;
    var font = document.getElementById('fontMenu').value;
    if(font === "Times New Roman") {
@@ -146,10 +146,16 @@ console.log(pString);
 console.log("height: " + height);
    var height2 = height;
    var pString2 = pString;
-   pString2 = pString + '@@@@@@@@';
+   
+   
+   var overflowValue = ""
+   var overflowNum = overflow*6;
+   for(var i=0; i<overflowNum; i++) {
+      overflowValue = overflowValue + '@';
+   }
+   pString2 = pString + overflowValue;
    hiddenDiv.innerHTML = pString2;
    height2 = hiddenDiv.offsetHeight;
-console.log("height2: " + height2);
    if(height2 > height) {
       hiddenDiv.innerHTML = pString;
       var height3 = height;
@@ -161,7 +167,6 @@ console.log("height2: " + height2);
          hiddenDiv.innerHTML = pString3;
          height3 = hiddenDiv.offsetHeight;
       }
-console.log("counter: " + counter);
       google.script.run.lineOverflow(pNum, counter);
    }
    
@@ -248,7 +253,20 @@ function doFont() {
 
 }
 
+function getCaches() {
+   google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
+
+
+
+
+}
+
+function setOverflowCache(value) {
+   overflow = value;
+}
+
 function apply() {
+  getCaches();
   var overflowCheck = document.getElementById('overflow').checked;
   var replaceCheck = document.getElementById('replace').checked;
   var wordExpandCheck = document.getElementById('wordExpand').checked;
