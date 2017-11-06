@@ -256,7 +256,13 @@ function getOverflowCache() {
   return cache.get("overflowSpacing"); 
 }
 
-
+function periodSpace() {
+   var body = DocumentApp.getActiveDocument().getBody();
+   body.replaceText('[.] ', '.  ')
+  
+  
+  
+}
 
 
 

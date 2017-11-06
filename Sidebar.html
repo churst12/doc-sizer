@@ -299,6 +299,13 @@ function doFont() {
 
 }
 
+function doPeriodSpace() {
+   google.script.run.periodSpace();
+
+
+
+}
+
 function getCaches() {
    google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
 
@@ -317,11 +324,13 @@ function apply() {
   var replaceCheck = document.getElementById('replace').checked;
   var wordExpandCheck = document.getElementById('wordExpand').checked;
   var wordContractCheck = document.getElementById('wordContract').checked;
+  var periodSpaceCheck = document.getElementById('periodSpace').checked;
   var t0 = doFont();
   var t1 = doOverflow(overflowCheck);
   var t2 = doPunctReplace(replaceCheck);
   var t3 = doWordExpand(wordExpandCheck);
   var t4 = doWordContract(wordContractCheck);
+  var t5 = doPeriodSpace(periodSpaceCheck);
   
   doLineSpacing(parseFloat(document.getElementById("myRange").value));
   if( t1 && t2 && t3 && t4) {
@@ -468,31 +477,28 @@ function switchFontIcon(icon) {
           <li>
              <input id='overflow'type='checkbox'>
              <label>Line OverFlow&nbsp&nbsp</label> 
-             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-                <span class="tooltiptext" >information </span>
-             </span>
+
           </li>
           <li>
              <input id='wordExpand'type='checkbox' >
              <label>Word Expand&nbsp&nbsp</label>
-             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-             <span class="tooltiptext" >information </span>
-             </span>
+
           </li>
              <li>
              <input id='wordContract'type='checkbox' >
              <label>Word Contractor&nbsp&nbsp</label>
-             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-             <span class="tooltiptext" >information </span>
-             </span>
+
           </li>
           <li>
              <input id='replace'type='checkbox' >
              <label>Puctuation Replace&nbsp&nbsp</label>
-             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-             <span class="tooltiptext" >information </span>
-             </span>
-          </li>   
+
+          </li> 
+          <li>
+             <input id='periodSpace'type='checkbox' >
+             <label>Space after periods&nbsp&nbsp</label>
+
+          </li>
        </ul>
     
     <br><hr style="width: 90%"><br>
