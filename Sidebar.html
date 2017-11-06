@@ -47,11 +47,12 @@ body > * {
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
-    width: 80%; /* Full-width */
+    width: 70%; /* Full-width */
     height: 10px;
     border-radius: 5px;
     background: #d8d8d8;
     outline: none; /* Remove outline */
+    float: right;
 }
 
 /* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
@@ -73,23 +74,67 @@ body > * {
     cursor: pointer; /* Cursor on hover */
 }
 
+.leftSide {
+   float: left;
+   width: 20%;
+   height: 100%;
+   
+}
+
+.rightSide {
+   float: right;
+   width: 75%;
+   height: 100%;
+}
+
+.label {
+   position: relative;
+   top: 0px;
+   float: right;
+   padding: 0;
+   margin: 0;
+}
+
 #hiddenDiv {
    margin-left: 300px;
    position: absolute;
    display: block;
-   background: #f1f1f1
+   background: #f1f1f1;
 
 
 }
+
+#bottomBar {
+   bottom: 0;
+   margin-left: 10px;
+   position: fixed;
+}
+
+#applyButton {
+   position: fixed;
+   bottom: 13px;
+
+
+}
+
+#fontMenu {
+   position: relative;
+   top: 0px;
+
+
+}
+
 
 ul li {
-    margin: 5px;
+    margin-top: 5px;
     padding: 0px;
+    width: 280px;
+    margin-left: -30px;
 }
-.settings {
+.bottomBar {
     position: absolute;
     bottom: 10px;
-    left: 10px;
+    margin-left: 10px;
 }
 
 .arial {
@@ -105,6 +150,7 @@ ul li {
 <base target="_top">
 <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script  >
 function lineAlert(lines) {
 var textLines = "";
@@ -324,77 +370,147 @@ window.onclick = function(event) {
     }
   }
 }
+
+function sortFont() {
+   var icon = document.getElementById("sortFontIcon");
+   var iconClass = switchFontIcon(icon);
+   var fontMenu = document.getElementById("fontMenu");
+   
+   const fMenu = document.querySelector("#fontMenu");
+   const options = Array.from(fMenu.querySelectorAll("option"));
+   options.reverse();
+   options.forEach((o) => fMenu.appendChild(o));
+
+}
+
+function switchFontIcon(icon) {
+   if(icon.className === "fa fa-sort-amount-desc") {
+      icon.className = "fa fa-sort-amount-asc";
+   }
+   else {
+      icon.className = "fa fa-sort-amount-desc";
+   }
+   return icon.className;
+}
+
+
+
 </script>
 </head>
   <body>
   
-    <br><b> Tools </b><br>
-    <select id="fontMenu">
-       <option value="Arial">Arial</option>
-       <option value="Times New Roman">Times New Roman</option>
-    </select>
-    
-    <input id="fontSize" type="text" value ="12"><br>
-    
-    
-    
-    <ul style="list-style-type:none">
-    <li>
-       <input id='overflow'type='checkbox'>
-       <label>Line OverFlow&nbsp&nbsp</label> 
-       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-          <span class="tooltiptext" >information </span>
-       </span>
-    </li>
-    <li>
-       <input id='replace'type='checkbox' >
-       <label>Puctuation Replace&nbsp&nbsp</label>
-       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-          <span class="tooltiptext" >information </span>
-       </span>
-    </li>
-    <li>
-       <input id='wordExpand'type='checkbox' >
-       <label>Word Expand&nbsp&nbsp</label>
-       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-          <span class="tooltiptext" >information </span>
-       </span>
-    </li>
-    <li>
-       <input id='wordContract'type='checkbox' >
-       <label>Word Contractor&nbsp&nbsp</label>
-       <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
-          <span class="tooltiptext" >information </span>
-       </span>
-    </li>
-    <li>
-       <div id="slidecontainer">
-          <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
-          <span id="demo"></span>
-       </div>
-       <script>
-          var slider = document.getElementById("myRange");
-          var output = document.getElementById("demo");
-          output.innerHTML = slider.value;
+    <div id='fomatting'>
+       <br><b><center> Formatting </center></b><br>
        
-          slider.oninput = function() {
-             output.innerHTML = this.value;
-          }
-       </script>
-    </li>
-    </ul>
+       
+       
+       <ul style="list-style-type:none">
+       
+          <li> 
+             <div class="leftSide"> 
+                <p class='label'> Font: </p>
+             </div>
+             
+             <div class="rightSide">
+                <button class="gray" type="button" onclick="sortFont();" >  
+                   <i id='sortFontIcon' class="fa fa-sort-amount-desc" style="font-size:16px;"></i>
+                </button>
+                <select id="fontMenu" >
+                   <option value="Arial">Arial</option>
+                   <option value="Times New Roman">Times New Roman</option>
+                </select>
+             </div>
+             <br style="clear:both;"/>
+          </li>
+
+          <li>
+             <div class='leftSide'>
+                <p class='label'> Size: </p>
+             </div>
+             <div class='rightSide'>
+                <input id="fontSize" type="text" value ="12" style="width: 50px;"><br>
+             </div>
+             <br style="clear:both;"/>
+          </li> 
+
+          <li>
+             <div class='leftSide'>
+                <p class='label'>Spacing:</p>
+             </div>
+             <div class='rightSide' >
+                <div id="slidecontainer">
+                   <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
+                   <span id="demo"></span>
+                </div>
+             </div>
+             
+             <script>
+                var slider = document.getElementById("myRange");
+                var output = document.getElementById("demo");
+                output.innerHTML = slider.value;
+                
+                slider.oninput = function() {
+                output.innerHTML = this.value;
+                }
+             </script>
+             <br style="clear:both;"/>
+          </li>
+          
+       </ul>
+    
+    </div>
+    
+    <br><hr style="width: 90%"><br>
+    
+    <div id='wordTools'>
+       <b><center> Word Tools </center></b><br>
+       <ul style="list-style-type:none">
+          <li>
+             <input id='overflow'type='checkbox'>
+             <label>Line OverFlow&nbsp&nbsp</label> 
+             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+                <span class="tooltiptext" >information </span>
+             </span>
+          </li>
+          <li>
+             <input id='wordExpand'type='checkbox' >
+             <label>Word Expand&nbsp&nbsp</label>
+             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+             <span class="tooltiptext" >information </span>
+             </span>
+          </li>
+             <li>
+             <input id='wordContract'type='checkbox' >
+             <label>Word Contractor&nbsp&nbsp</label>
+             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+             <span class="tooltiptext" >information </span>
+             </span>
+          </li>
+          <li>
+             <input id='replace'type='checkbox' >
+             <label>Puctuation Replace&nbsp&nbsp</label>
+             <span class="tooltip"> <i class="material-icons" style="font-size:15px">info_outline</i>
+             <span class="tooltiptext" >information </span>
+             </span>
+          </li>   
+       </ul>
+    
+    <br><hr style="width: 90%"><br>
+    
+    </div>
+    
     
     <div id="hiddenDiv">
        
     </div>
     
-    <p align="center" ><button class="blue" type="button" onclick="apply();" id="applyButton">Apply</button><br></p>
-    <p align="center" id="text"> </p><p id="showText"> </p>
-    <span class="settings"> 
-       <button class="gray" type="button" onclick="settings();" id="settingsButton"> 
-          <i class="material-icons">settings</i>
-       </button>
-    </span>
+
+   <div id='bottomBar'>
+      <button class="gray" type="button" onclick="settings();"  id='settingsButton'>  <i class="material-icons">settings</i></button>
+      <button class="blue" type="button" onclick="apply();" id='applyButton'>Apply</button><br>
+      <p id="text"> </p><p id="showText"> </p>
+   </div>
+
     
 
   </body>
