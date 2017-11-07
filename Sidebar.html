@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base target="_top">
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
 <style>
 /*
 body {
@@ -43,16 +49,31 @@ body > * {
     width: 100%; /* Width of the outside container */
 }
 
+#logoGraphic {
+ position: fixed;
+ margin-left: 180px;
+ bottom: 5px;
+
+}
+#signature {
+ position: fixed;
+ margin-left: 210px;
+ bottom: 10px;
+ 
+
+}
+
 /* The slider itself */
 .slider {
     -webkit-appearance: none;  /* Override default CSS styles */
     appearance: none;
     width: 70%; /* Full-width */
-    height: 10px;
+    height: 15px;
     border-radius: 5px;
     background: #d8d8d8;
     outline: none; /* Remove outline */
     float: right;
+    margin-top: 5px;
 }
 
 /* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
@@ -104,18 +125,26 @@ body > * {
 
 }
 
-#bottomBar {
-   bottom: 0;
+.optionsBar {
    margin-left: 10px;
-   position: fixed;
+   margin-top: 10px;
 }
 
 #applyButton {
-   position: fixed;
-   bottom: 13px;
+   position: relative;
+   bottom: 10px;
 
 
 }
+
+#settingsButton {
+   position: relative;
+   bottom: 3px;
+
+
+}
+
+
 
 #fontMenu {
    position: relative;
@@ -124,6 +153,12 @@ body > * {
 
 }
 
+#text {
+   margin-left: 10px;
+   color: #808080;
+
+
+}
 
 ul li {
     margin-top: 5px;
@@ -147,20 +182,125 @@ ul li {
 }
 
 </style>
-<base target="_top">
-<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script  >
-function lineAlert(lines) {
-var textLines = "";
-   for(i=0; i<lines.length; i++) {
-         textLines += lines[i] + "***";
-   }
+
+  <body>
+  
+    <div id='fomatting'>
+       <br><b><center> Formatting </center></b><br>
+       
+       
+       
+       <ul style="list-style-type:none">
+       
+          <li> 
+             <div class="leftSide"> 
+                <p class='label'> Font: </p>
+             </div>
+             
+             <div class="rightSide">
+                <button class="gray" type="button" onclick="sortFont();" >  
+                   <i id='sortFontIcon' class="fa fa-sort-amount-desc" style="font-size:16px;"></i>
+                </button>
+                <select id="fontMenu" >
+                   <option value="Arial">Arial</option>
+                   <option value="Times New Roman">Times New Roman</option>
+                </select>
+             </div>
+             <br style="clear:both;"/>
+          </li>
+
+          <li>
+             <div class='leftSide'>
+                <p class='label'> Size: </p>
+             </div>
+             <div class='rightSide'>
+                <input id="fontSize" type="text" value ="12"style="width: 50px;" ><br>
+             </div>
+             <br style="clear:both;"/>
+          </li> 
+
+          <li>
+             <div class='leftSide'>
+                <p class='label'>Spacing:</p>
+             </div>
+             <div class='rightSide' >
+                <div id="slidecontainer">
+                   <span><input id="demo" type="text" value ="1.15" style="width: 50px;"></span>
+                   <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
+                    
+                </div>
+             </div>
+             
+             <script>
+                var slider = document.getElementById("myRange");
+                var output = document.getElementById("demo");
+                output.value = slider.value;
+                
+                slider.oninput = function() {
+                output.value = this.value;
+                }
+             </script>
+             <br style="clear:both;"/>
+          </li>
+          
+       </ul>
+    
+    </div>
+    
+    <br><hr style="width: 90%"><br>
+    
+    <div id='wordTools'>
+       <b><center> Word Tools </center></b><br>
+       <ul style="list-style-type:none">
+          <li>
+             <input id='overflow'type='checkbox'>
+             <label>Line OverFlow&nbsp&nbsp</label> 
+
+          </li>
+          <li>
+             <input id='wordExpand'type='checkbox' >
+             <label>Word Expand&nbsp&nbsp</label>
+
+          </li>
+             <li>
+             <input id='wordContract'type='checkbox' >
+             <label>Word Contractor&nbsp&nbsp</label>
+
+          </li>
+          <li>
+             <input id='replace'type='checkbox' >
+             <label>Puctuation Replace&nbsp&nbsp</label>
+
+          </li> 
+          <li>
+             <input id='periodSpace'type='checkbox' >
+             <label>Space after periods&nbsp&nbsp</label>
+
+          </li>
+       </ul>
+    
+    <br><hr style="width: 90%">
+    
+    </div>
+
+    <div id="hiddenDiv"> </div>
+    
+   <div class='optionsBar'>
+      <button class="gray" type="button" onclick="settings();"  id='settingsButton'>  <i class="material-icons">settings</i></button>
+      <button class="blue" type="button" onclick="apply();" id='applyButton'>Apply</button><br>
+   </div>
    
-   var text = document.getElementById("text");
-   text.innerHTML = textLines;
-}
+   <p id="text" > </p>
+   
+   <div class="branding">
+      <a href="https://github.com/churst12/doc-sizer" >
+         <img alt="Add-on logo" class="logo" src="http://i66.tinypic.com/158b3b6.png" height="30" id="logoGraphic">
+         <span class="gray branding-text" id="signature"><i>by Collin Hurst</i></span>
+      </a>
+   </div>
+
+<script  >
+
 function paragraphOverflow(paragraphs) {
    for(var i=0; i<paragraphs.length; i++) {
       google.script.run.withSuccessHandler(takePString).getPString(i);
@@ -348,16 +488,7 @@ function settings() {
    google.script.run.settingsPage();
 }
 
-function showString() {
-   google.script.run.withSuccessHandler(displayText).showText();
-}
 
-function displayText(text) {
-   var show = document.getElementById("showText");
-   show.innerHTML = text;
-
-
-}
   
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
@@ -403,122 +534,7 @@ function switchFontIcon(icon) {
 }
 
 
-
 </script>
-</head>
-  <body>
-  
-    <div id='fomatting'>
-       <br><b><center> Formatting </center></b><br>
-       
-       
-       
-       <ul style="list-style-type:none">
-       
-          <li> 
-             <div class="leftSide"> 
-                <p class='label'> Font: </p>
-             </div>
-             
-             <div class="rightSide">
-                <button class="gray" type="button" onclick="sortFont();" >  
-                   <i id='sortFontIcon' class="fa fa-sort-amount-desc" style="font-size:16px;"></i>
-                </button>
-                <select id="fontMenu" >
-                   <option value="Arial">Arial</option>
-                   <option value="Times New Roman">Times New Roman</option>
-                </select>
-             </div>
-             <br style="clear:both;"/>
-          </li>
-
-          <li>
-             <div class='leftSide'>
-                <p class='label'> Size: </p>
-             </div>
-             <div class='rightSide'>
-                <input id="fontSize" type="text" value ="12" style="width: 50px;"><br>
-             </div>
-             <br style="clear:both;"/>
-          </li> 
-
-          <li>
-             <div class='leftSide'>
-                <p class='label'>Spacing:</p>
-             </div>
-             <div class='rightSide' >
-                <div id="slidecontainer">
-                   <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
-                   <span id="demo"></span>
-                </div>
-             </div>
-             
-             <script>
-                var slider = document.getElementById("myRange");
-                var output = document.getElementById("demo");
-                output.innerHTML = slider.value;
-                
-                slider.oninput = function() {
-                output.innerHTML = this.value;
-                }
-             </script>
-             <br style="clear:both;"/>
-          </li>
-          
-       </ul>
-    
-    </div>
-    
-    <br><hr style="width: 90%"><br>
-    
-    <div id='wordTools'>
-       <b><center> Word Tools </center></b><br>
-       <ul style="list-style-type:none">
-          <li>
-             <input id='overflow'type='checkbox'>
-             <label>Line OverFlow&nbsp&nbsp</label> 
-
-          </li>
-          <li>
-             <input id='wordExpand'type='checkbox' >
-             <label>Word Expand&nbsp&nbsp</label>
-
-          </li>
-             <li>
-             <input id='wordContract'type='checkbox' >
-             <label>Word Contractor&nbsp&nbsp</label>
-
-          </li>
-          <li>
-             <input id='replace'type='checkbox' >
-             <label>Puctuation Replace&nbsp&nbsp</label>
-
-          </li> 
-          <li>
-             <input id='periodSpace'type='checkbox' >
-             <label>Space after periods&nbsp&nbsp</label>
-
-          </li>
-       </ul>
-    
-    <br><hr style="width: 90%"><br>
-    
-    </div>
-    
-    
-    <div id="hiddenDiv">
-       
-    </div>
-    
-
-   <div id='bottomBar'>
-      <button class="gray" type="button" onclick="settings();"  id='settingsButton'>  <i class="material-icons">settings</i></button>
-      <button class="blue" type="button" onclick="apply();" id='applyButton'>Apply</button><br>
-      <p id="text"> </p><p id="showText"> </p>
-   </div>
-
-    
-
   </body>
 </html>
 

@@ -11,6 +11,7 @@ function onInstall(e) {
   onOpen(e);
 }
 
+
 function showSidebar() {
   var cache = CacheService.getUserCache();
   cache.remove("wordsShort");
@@ -24,6 +25,11 @@ function showSidebar() {
   //}
   var ui = HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('DocSizer');
   DocumentApp.getUi().showSidebar(ui);
+}
+
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
 function alphabetize(array) {
