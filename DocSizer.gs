@@ -265,9 +265,19 @@ function getOverflowCache() {
 function periodSpace() {
    var body = DocumentApp.getActiveDocument().getBody();
    body.replaceText('[.] ', '.  ')
-  
-  
-  
+}
+
+function marginSet(side, value) {
+  var body = DocumentApp.getActiveDocument().getBody();
+  var ptValue = parseInt(value * 72);
+  Logger.log(value);
+  Logger.log(ptValue);
+  if(side === "top") {
+     body.setMarginTop(ptValue);
+  }
+  if(side === "bottom") {
+     body.setMarginBottom(ptValue);
+  }
 }
 
 

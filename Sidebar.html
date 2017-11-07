@@ -186,7 +186,7 @@ ul li {
   <body>
   
     <div id='fomatting'>
-       <br><b><center> Formatting </center></b><br>
+       <br><b><center> Formatting </center></b>
        
        
        
@@ -232,17 +232,65 @@ ul li {
              </div>
              
              <script>
-                var slider = document.getElementById("myRange");
-                var output = document.getElementById("demo");
-                output.value = slider.value;
+                var slider1 = document.getElementById("myRange");
+                var output1 = document.getElementById("demo");
+                output1.value = slider1.value;
                 
-                slider.oninput = function() {
-                output.value = this.value;
+                slider1.oninput = function() {
+                output1.value = this.value;
                 }
              </script>
              <br style="clear:both;"/>
           </li>
           
+          <li>
+             <p><b> Margins </b></p>
+             <div class='leftSide'>
+                <p class='label'>Top:</p>
+             </div>
+             <div class='rightSide' >
+                <div id="slidecontainer">
+                   <span><input id="topMarginValue" type="text" value ="1" style="width: 50px;"></span>
+                   <input type="range" min="0" max="3" value="1" class="slider" id="topMarginSlider" step="0.1">
+                   
+                </div>
+             </div>
+             
+             <script>
+                var slider2 = document.getElementById("topMarginSlider");
+                var output2 = document.getElementById("topMarginValue");
+                output2.value = slider2.value;
+                
+                slider2.oninput = function() {
+                output2.value = this.value;
+                }
+             </script>
+             <br style="clear:both;"/>
+          </li>
+          
+          <li>
+             <div class='leftSide'>
+                <p class='label'>Bottom:</p>
+             </div>
+             <div class='rightSide' >
+                <div id="slidecontainer">
+                   <span><input id="bottomMarginValue" type="text" value ="1" style="width: 50px;"></span>
+                   <input type="range" min="0" max="3" value="1" class="slider" id="bottomMarginSlider" step="0.1">
+                   
+                </div>
+             </div>
+             
+             <script>
+                var slider3 = document.getElementById("bottomMarginSlider");
+                var output3 = document.getElementById("bottomMarginValue");
+                output3.value = slider3.value;
+                
+                slider3.oninput = function() {
+                output3.value = this.value;
+                }
+             </script>
+             <br style="clear:both;"/>
+          </li>
        </ul>
     
     </div>
@@ -250,7 +298,7 @@ ul li {
     <br><hr style="width: 90%"><br>
     
     <div id='wordTools'>
-       <b><center> Word Tools </center></b><br>
+       <b><center> Word Tools </center></b>
        <ul style="list-style-type:none">
           <li>
              <input id='overflow'type='checkbox'>
@@ -294,7 +342,7 @@ ul li {
    
    <div class="branding">
       <a href="https://github.com/churst12/doc-sizer" >
-         <img alt="Add-on logo" class="logo" src="http://i66.tinypic.com/158b3b6.png" height="30" id="logoGraphic">
+         <img class="logo" src="https://image.ibb.co/cANuAw/CH_Logo.png" alt="CH_Logo" height="30" id="logoGraphic">
          <span class="gray branding-text" id="signature"><i>by Collin Hurst</i></span>
       </a>
    </div>
@@ -439,19 +487,20 @@ function doFont() {
 
 }
 
+function doTMargin(value) {
+      google.script.run.marginSet("top", value);
+}
+
+function doBMargin(value) {
+      google.script.run.marginSet("bottom", value);
+}
+
 function doPeriodSpace() {
    google.script.run.periodSpace();
-
-
-
 }
 
 function getCaches() {
    google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
-
-
-
-
 }
 
 function setOverflowCache(value) {
@@ -465,14 +514,18 @@ function apply() {
   var wordExpandCheck = document.getElementById('wordExpand').checked;
   var wordContractCheck = document.getElementById('wordContract').checked;
   var periodSpaceCheck = document.getElementById('periodSpace').checked;
+  var bMarginValue = document.getElementById('bottomMarginValue').value;
+  var tMarginValue = document.getElementById('topMarginValue').value;
   var t0 = doFont();
   var t1 = doOverflow(overflowCheck);
   var t2 = doPunctReplace(replaceCheck);
   var t3 = doWordExpand(wordExpandCheck);
   var t4 = doWordContract(wordContractCheck);
   var t5 = doPeriodSpace(periodSpaceCheck);
-  
   doLineSpacing(parseFloat(document.getElementById("myRange").value));
+  doBMargin(bMarginValue);
+  doTMargin(tMarginValue);
+  
   if( t1 && t2 && t3 && t4) {
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
@@ -514,7 +567,7 @@ window.onclick = function(event) {
 function sortFont() {
    var icon = document.getElementById("sortFontIcon");
    var iconClass = switchFontIcon(icon);
-   var fontMenu = document.getElementById("fontMenu");
+   var fontMenu = document.getElementById("fo-ntMenu");
    
    const fMenu = document.querySelector("#fontMenu");
    const options = Array.from(fMenu.querySelectorAll("option"));
