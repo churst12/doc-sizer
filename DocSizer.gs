@@ -249,10 +249,6 @@ function lineOverflow(pNum, counter) {
    wordsAppended.setBackgroundColor('#ffff00');
 }
 
-function setWordCache( value) {
-  
-  
-}
 
 function setOverflowCache(value) {
    cache =  CacheService.getUserCache();
@@ -278,7 +274,8 @@ function getPunctReplaceCache() {
 
 function periodSpace() {
    var body = DocumentApp.getActiveDocument().getBody();
-   body.replaceText('[.] ', '.  ')
+   body.replaceText('[.] ', '.  ');
+   body.replaceText('[.]   ','.  ');
 }
 
 function marginSet(side, value) {

@@ -300,6 +300,7 @@ ul li {
     <div id='wordTools'>
        <b><center> Word Tools </center></b>
        <ul style="list-style-type:none">
+          <!-- *** Beta Testing***
           <li>
              <input id='overflow'type='checkbox'>
              <label>Line OverFlow&nbsp&nbsp</label> 
@@ -315,6 +316,7 @@ ul li {
              <label>Word Contractor&nbsp&nbsp</label>
 
           </li>
+          -->
           <li>
              <input id='punctReplace'type='checkbox' >
              <label>Puctuation Replace&nbsp&nbsp</label>
@@ -325,9 +327,16 @@ ul li {
              <label>Space after periods&nbsp&nbsp</label>
 
           </li>
+          <li>
+             <label for="gender"><b>Contractions: </b><br> </label>
+             <input type="radio" id="contraction1" name="words" value="0" >Expand<br>
+             <input type="radio" id="contraction2" name="words" value="1" >Contract<br>
+             <input type="radio" id="contraction3" name="words" value="2" checked="checked">None
+          </li>
+          
        </ul>
     
-    <br><hr style="width: 90%">
+    <hr style="width: 90%">
     
     </div>
 
@@ -367,8 +376,6 @@ function takePString(pArray) {
       font = 'tnr';
    }
    var hiddenDiv = document.getElementById('hiddenDiv');
-   //document.getElementById('hiddenDiv').style.width = 468 + "pt";
-   //hiddenDiv.classList.add(font);
    hiddenDiv.style.fontSize = fontSize + 'pt';
    hiddenDiv.style.fontSizeFamily = font;
    
@@ -403,20 +410,12 @@ function takePString(pArray) {
       }
       google.script.run.lineOverflow(pNum, counter);
    }
-   
-
-
 }
 
 function doOverflow(value) {
-   var success = false;
    if(value) {
       google.script.run.withSuccessHandler(setHiddenWidth).getMargin();
       google.script.run.withSuccessHandler(paragraphOverflow).getParagraphs(); //withSuccessHandler later when can retrieve lines to be edited
-      success = true;
-   }
-   else {
-      success = true;
    }
    return true;
 }
@@ -433,8 +432,6 @@ function setHiddenFont(fontArray) {
    var font = fontArray[0];
    var fontSize = fontArray[1];
    console.log(font);
-   
-   //document.getElementById('hiddenDiv').style.width = width + "pt";
 }
 
 
@@ -474,11 +471,6 @@ function doBMargin(value) {
       google.script.run.marginSet("bottom", value);
 }
 
-
-function getCaches() {
-   
-}
-
 function setOverflowCache(value) { overflow = value; }
 function setPunctReplaceCache(value) { 
    if(value === undefined) {
@@ -490,18 +482,19 @@ function setPunctReplaceCache(value) {
 }
 
 function doChecks(c1, c2, c3, c4, c5) {
-   if(c2) { google.script.run.wordExpand(); }
-   if(c3) { google.script.run.wordContract(); } 
+   if(c1) { google.script.run.wordExpand(); }
+   if(c2) { google.script.run.wordContract(); } 
    doPunctReplace(c4);
    if(c5) { google.script.run.periodSpace(); }
-   if(c1) { doOverFlow(); }
+   //if(c1) { doOverFlow(); }
 
 }
 
 function apply() {
-  var c1 = document.getElementById('overflow').checked;
-  var c2 = document.getElementById('wordExpand').checked;
-  var c3 = document.getElementById('wordContract').checked;
+  var c0 =  false;     //document.getElementById('overflow').checked;
+  var c1 = document.getElementById('contraction1').checked;
+  var c2 = document.getElementById('contraction2').checked;
+  var c3 = document.getElementById('contraction3').checked;
   var c4 = document.getElementById('punctReplace').checked;
   var c5 = document.getElementById('periodSpace').checked;
   var bMarginValue = document.getElementById('bottomMarginValue').value;
@@ -513,7 +506,7 @@ function apply() {
   doTMargin(tMarginValue);
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
-  if(5<10) {
+  if(5>10) {
      var text = document.getElementById("text");
      text.innerHTML = "Apply Unsuccessful";
   }
@@ -521,29 +514,6 @@ function apply() {
 
 function settings() {
    google.script.run.settingsPage();
-}
-
-
-  
-/* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
-function showDrop() {
-    document.getElementById("fontDropdown").classList.toggle("show");
-}  
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
 }
 
 function sortFont() {

@@ -81,6 +81,7 @@
        width: 70%; /* Full-width */
        height: 10px;
        border-radius: 5px;
+       margin-left: 20px;
        background: #d8d8d8;
        outline: none; /* Remove outline */
     }
@@ -106,7 +107,7 @@
     </style>
   </head>
   <body>
-
+     <!-- **Line Overflow in BETA Testing**
      <button class="dropDown">Line Overflow</button>
      <div class="panel">
         <div id="slidecontainer">
@@ -121,22 +122,14 @@
           }
        </script>
      </div>
-     
+     -->
      <button class="dropDown">Word Contractions</button>
      <div class="panel">
-        <div class="leftContractions">
-           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button>
-        </div>
         <div class="rightContractions">
            <div style="width: 100%; height: 100%; overflow: scroll; border:1px solid black;">
               <p class="alignLeft" id="leftWords"></p>
               <p class="alignRight" id="rightWords"></p>
-
            </div>
-        </div>
-        <div style="padding: 10px;">
-           <input id='textInQuotes'type='checkbox' checked>
-           <label>Don't change text in quotes&nbsp&nbsp</label>
         </div>
         <div class="addWord">
            <button type="button" onClick="addWord();" id="addContraction" style="margin-left:10px;">Add</button>
@@ -145,17 +138,19 @@
            <p id="errorMessage" style="color:red;"></p>
            
         </div>
+        
      </div>
   
      <button class="dropDown">Punctuation Replace</button>
      <div class="panel">
-        <span>Change punctuation size by:&nbsp</span>
+        <br><span >&nbsp&nbsp Change punctuation size by:&nbsp</span>
         <span id='punctSliderValue'> </span>
         <span>pts</span>
+        <br><br>
         <div id="slidecontainer">
-          <span> -3</span>
+          <span>&nbsp&nbsp -3</span>
           <input id="punctSlider" type="range" min="-3" max="3" value='0' class="slider" step="1">
-          <span> +3</span>
+          <span>&nbsp&nbsp +3</span>
        </div>
        <script>
           var slider2 = document.getElementById("punctSlider");
@@ -166,13 +161,9 @@
        </script>
      </div>
 
-     <button class="dropDown">Section 3</button>
-     <div class="panel">
-        <p>Lorem ipsum...</p>
-     </div>
      <p id="testOutput">  </p>
     <span class = "bottomBar">
-       <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
+       <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Close</button>
        <button class="blue" type="button" onClick="confirmSettings();" id="confirmSettings">Save</button>
        <span id="message"></span>
     </span>
@@ -203,23 +194,25 @@
     
     }
     function addWord() {
+          var errorElement = document.getElementById("errorMessage");
           var wordShort = document.getElementById("wordContracted").value;
           var wordLong = document.getElementById("wordExtended").value;
           console.log("wordShort: " + wordShort + "  wordLong: " + wordLong );
           if((wordShort.length == 0) || (wordLong.length == 0 )) {
-             var errorElement = document.getElementById("errorMessage");
              errorElement.innerHTML = "*please fill both fields";
+             errorElement.style.color = 'red';
           }
           else {
              google.script.run.addWord(wordShort, wordLong);
+             var errorElement = document.getElementById("errorMessage");
+             errorElement.innerHTML = "Word added."; 
+             errorElement.style.color = 'gray';
+             document.getElementById("wordContracted").value = "";
+             document.getElementById("wordExtended").value = "";
 
           }
     }
-    
-    function deleteContraction() {
-    
-    }
-    
+
     function showShortWords(shortWords) {
     console.log(shortWords);
        document.getElementById('leftWords').innerHTML = shortWords.join(" <br> ");
@@ -231,7 +224,7 @@
     }
     
     function loadSettingsCache() {
-       google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
+       //google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
        google.script.run.withSuccessHandler(setPunctReplaceCache).getPunctReplaceCache();
        
     
@@ -260,8 +253,7 @@
     }
     
     function confirmSettings() {
-       google.script.run.setWordCache(document.getElementById("textInQuotes").value);
-       google.script.run.setOverflowCache(document.getElementById("overflowSlider").value);
+       //google.script.run.setOverflowCache(document.getElementById("overflowSlider").value);
        google.script.run.setPunctReplaceCache(document.getElementById("punctSlider").value);
        document.getElementById("wordContracted").value = "";
        document.getElementById("wordExtended").value = "";
