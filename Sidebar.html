@@ -172,14 +172,11 @@ ul li {
     margin-left: 10px;
 }
 
-.arial {
-  font-family: 'Arial';
-    
-}
-
-.tmr {
-  font-family: 'Times New Roman';
-}
+.arial { font-family: 'Arial'; }
+.tnr { font-family: 'Times New Roman'; }
+.average { font-family: 'Average'; }
+.calibri { font-family: 'calibri'; }
+.verdana { font-family: 'verdana'; }
 
 </style>
 
@@ -202,8 +199,11 @@ ul li {
                    <i id='sortFontIcon' class="fa fa-sort-amount-desc" style="font-size:16px;"></i>
                 </button>
                 <select id="fontMenu" >
-                   <option value="Arial">Arial</option>
+                   <option value="Verdana">Verdana</option>
+                   <option value="Arial" selected="selected">Arial</option>
+                   <option value="Average">Average</option>
                    <option value="Times New Roman">Times New Roman</option>
+                   <option value="Calibri">Calibri</option>
                 </select>
              </div>
              <br style="clear:both;"/>
@@ -244,7 +244,7 @@ ul li {
           </li>
           
           <li>
-             <p><b> Margins </b></p>
+             <p><b> Margins:&nbsp&nbsp&nbsp&nbsp&nbsp(inches)</b></p>
              <div class='leftSide'>
                 <p class='label'>Top:</p>
              </div>
@@ -316,7 +316,7 @@ ul li {
 
           </li>
           <li>
-             <input id='replace'type='checkbox' >
+             <input id='punctReplace'type='checkbox' >
              <label>Puctuation Replace&nbsp&nbsp</label>
 
           </li> 
@@ -349,6 +349,7 @@ ul li {
 
 <script  >
 
+var punctReplaceSize;
 function paragraphOverflow(paragraphs) {
    for(var i=0; i<paragraphs.length; i++) {
       google.script.run.withSuccessHandler(takePString).getPString(i);
@@ -363,7 +364,7 @@ function takePString(pArray) {
    var fontSize = document.getElementById('fontSize').value;
    var font = document.getElementById('fontMenu').value;
    if(font === "Times New Roman") {
-      font = 'tmr';
+      font = 'tnr';
    }
    var hiddenDiv = document.getElementById('hiddenDiv');
    //document.getElementById('hiddenDiv').style.width = 468 + "pt";
@@ -377,7 +378,6 @@ function takePString(pArray) {
    if(height === 0) {
       height = 18;
    }
-console.log("height: " + height);
    var height2 = height;
    var pString2 = pString;
    
@@ -439,36 +439,15 @@ function setHiddenFont(fontArray) {
 
 
 function doPunctReplace(value) {
-   var success = false;
+   var fSize = document.getElementById('fontSize').value
    if(value) {
-      google.script.run.punctReplace("[.]", 14);
-      success = true;
+      google.script.run.punctReplace("[.]", fSize);
    }
    else {
-      google.script.run.punctReplace("[.]", 11);
-      success = true;
+      google.script.run.punctSet("[.]", fSize);
    }
-   return success;
-}
-function doWordExpand(value) {
-   if(value) {
-      google.script.run.wordExpand();    
-   }
-   else {
-   
-   }
-   return true;
 }
 
-function doWordContract(value) {
-   if(value) {
-      google.script.run.wordContract();    
-   }
-   else {
-   
-   }
-   return true;
-}
 
 function doLineSpacing(value) {
    if(value) {
@@ -495,45 +474,48 @@ function doBMargin(value) {
       google.script.run.marginSet("bottom", value);
 }
 
-function doPeriodSpace() {
-   google.script.run.periodSpace();
-}
 
 function getCaches() {
-   google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
+   
 }
 
-function setOverflowCache(value) {
-   overflow = value;
+function setOverflowCache(value) { overflow = value; }
+function setPunctReplaceCache(value) { 
+   if(value === undefined) {
+      punctReplaceSize = 1;
+   }
+   else {
+      punctReplaceSize = value; 
+   }
+}
+
+function doChecks(c1, c2, c3, c4, c5) {
+   if(c2) { google.script.run.wordExpand(); }
+   if(c3) { google.script.run.wordContract(); } 
+   doPunctReplace(c4);
+   if(c5) { google.script.run.periodSpace(); }
+   if(c1) { doOverFlow(); }
+
 }
 
 function apply() {
-  getCaches();
-  var overflowCheck = document.getElementById('overflow').checked;
-  var replaceCheck = document.getElementById('replace').checked;
-  var wordExpandCheck = document.getElementById('wordExpand').checked;
-  var wordContractCheck = document.getElementById('wordContract').checked;
-  var periodSpaceCheck = document.getElementById('periodSpace').checked;
+  var c1 = document.getElementById('overflow').checked;
+  var c2 = document.getElementById('wordExpand').checked;
+  var c3 = document.getElementById('wordContract').checked;
+  var c4 = document.getElementById('punctReplace').checked;
+  var c5 = document.getElementById('periodSpace').checked;
   var bMarginValue = document.getElementById('bottomMarginValue').value;
   var tMarginValue = document.getElementById('topMarginValue').value;
-  var t0 = doFont();
-  var t1 = doOverflow(overflowCheck);
-  var t2 = doPunctReplace(replaceCheck);
-  var t3 = doWordExpand(wordExpandCheck);
-  var t4 = doWordContract(wordContractCheck);
-  var t5 = doPeriodSpace(periodSpaceCheck);
+  doChecks(c1, c2, c3, c4, c5);
+  doFont();
   doLineSpacing(parseFloat(document.getElementById("myRange").value));
   doBMargin(bMarginValue);
   doTMargin(tMarginValue);
-  
-  if( t1 && t2 && t3 && t4) {
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
-  }
-  else {
+  if(5<10) {
      var text = document.getElementById("text");
      text.innerHTML = "Apply Unsuccessful";
-     console.log(t1 + " " + t2 +" " +  t3 + "" + t4);
   }
 }
 

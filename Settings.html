@@ -78,7 +78,7 @@
     .slider {
        -webkit-appearance: none;  /* Override default CSS styles */
        appearance: none;
-       width: 80%; /* Full-width */
+       width: 70%; /* Full-width */
        height: 10px;
        border-radius: 5px;
        background: #d8d8d8;
@@ -104,7 +104,100 @@
        cursor: pointer; /* Cursor on hover */
     }
     </style>
-    <script> 
+  </head>
+  <body>
+
+     <button class="dropDown">Line Overflow</button>
+     <div class="panel">
+        <div id="slidecontainer">
+          <input id="overflowSlider" type="range" min="0" max="3" value='1' class="slider" step="0.5">
+          <span id="overflowSliderValue"></span><span style="float: right" > in.</span>
+       </div>
+       <script>
+          var slider = document.getElementById("overflowSlider");
+          var output = document.getElementById("overflowSliderValue");
+          slider.oninput = function() {
+             output.innerHTML = this.value;
+          }
+       </script>
+     </div>
+     
+     <button class="dropDown">Word Contractions</button>
+     <div class="panel">
+        <div class="leftContractions">
+           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button>
+        </div>
+        <div class="rightContractions">
+           <div style="width: 100%; height: 100%; overflow: scroll; border:1px solid black;">
+              <p class="alignLeft" id="leftWords"></p>
+              <p class="alignRight" id="rightWords"></p>
+
+           </div>
+        </div>
+        <div style="padding: 10px;">
+           <input id='textInQuotes'type='checkbox' checked>
+           <label>Don't change text in quotes&nbsp&nbsp</label>
+        </div>
+        <div class="addWord">
+           <button type="button" onClick="addWord();" id="addContraction" style="margin-left:10px;">Add</button>
+           <span class="wordInput"><input type="text" id="wordContracted" value="" style="float:right; margin-right:35px"></span><br>
+           <span class="wordInput"><input type="text" id="wordExtended" value="" style="float:right; margin-right:35px"></span><br>
+           <p id="errorMessage" style="color:red;"></p>
+           
+        </div>
+     </div>
+  
+     <button class="dropDown">Punctuation Replace</button>
+     <div class="panel">
+        <span>Change punctuation size by:&nbsp</span>
+        <span id='punctSliderValue'> </span>
+        <span>pts</span>
+        <div id="slidecontainer">
+          <span> -3</span>
+          <input id="punctSlider" type="range" min="-3" max="3" value='0' class="slider" step="1">
+          <span> +3</span>
+       </div>
+       <script>
+          var slider2 = document.getElementById("punctSlider");
+          var output2 = document.getElementById("punctSliderValue");
+          slider2.oninput = function() {
+             output2.innerHTML = this.value;
+          }
+       </script>
+     </div>
+
+     <button class="dropDown">Section 3</button>
+     <div class="panel">
+        <p>Lorem ipsum...</p>
+     </div>
+     <p id="testOutput">  </p>
+    <span class = "bottomBar">
+       <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
+       <button class="blue" type="button" onClick="confirmSettings();" id="confirmSettings">Save</button>
+       <span id="message"></span>
+    </span>
+    
+    <script>
+    var acc = document.getElementsByClassName("dropDown");
+    var i;
+    for (i = 0; i < acc.length; i++) {
+       acc[i].onclick = function(){
+          /* Toggle between adding and removing the "active" class,
+          to highlight the button that controls the panel */
+          this.classList.toggle("active");
+    
+          /* Toggle between hiding and showing the active panel */
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+             panel.style.display = "none";
+          } 
+          else {
+             panel.style.display = "block";
+          }
+       }
+    }
+    </script>
+        <script> 
     function cancelSettings() {
        google.script.run.cancelSettings();
     
@@ -139,12 +232,27 @@
     
     function loadSettingsCache() {
        google.script.run.withSuccessHandler(setOverflowCache).getOverflowCache();
+       google.script.run.withSuccessHandler(setPunctReplaceCache).getPunctReplaceCache();
        
     
     
     }
     
-    function setOverflowCache(value) { document.getElementById("overflowSlider").value = value;}
+    function setOverflowCache(value) {
+       overflowVal = value;
+       if(value === undefined) { overflowVal = 1; }
+       document.getElementById("overflowSlider").value = overflowVal;
+       document.getElementById("overflowSliderValue").innerHTML = overflowVal;
+     }
+     
+     function setPunctReplaceCache(value) {
+       punctReplaceSize = value;
+       if(value === undefined) { punctReplaceSize = 1; }
+       console.log(punctReplaceSize);
+       document.getElementById("punctSlider").value = punctReplaceSize;
+       document.getElementById("punctSliderValue").innerHTML = punctReplaceSize;
+       
+     }
     
     function displayWords() {
        google.script.run.withSuccessHandler(showShortWords).getWordsShortArray();
@@ -154,6 +262,7 @@
     function confirmSettings() {
        google.script.run.setWordCache(document.getElementById("textInQuotes").value);
        google.script.run.setOverflowCache(document.getElementById("overflowSlider").value);
+       google.script.run.setPunctReplaceCache(document.getElementById("punctSlider").value);
        document.getElementById("wordContracted").value = "";
        document.getElementById("wordExtended").value = "";
        document.getElementById("message").innerHTML = " Changes Saved.";
@@ -163,94 +272,8 @@
     
     }
     
-    
-    </script>
-  </head>
-  <body>
-
-     <button class="dropDown">Line Overflow</button>
-     <div class="panel">
-        <div id="slidecontainer">
-          <input id="overflowSlider" type="range" min="0" max="3" value='1' class="slider" step="0.5">
-          <span id="overflowSliderValue"></span>
-       </div>
-       <script>
-          var slider = document.getElementById("overflowSlider");
-          var output = document.getElementById("overflowSliderValue");
-          output.innerHTML = slider.value;
-       
-          slider.oninput = function() {
-             output.innerHTML = this.value;
-          }
-       </script>
-     </div>
-     
-     <button class="dropDown">Word Contractions</button>
-     <div class="panel">
-        <div class="leftContractions">
-           <button type="button" onClick="deleteContraction();" id="deleteContraction">Delete</button>
-        </div>
-        <div class="rightContractions">
-           <div style="width: 100%; height: 100%; overflow: scroll; border:1px solid black;">
-              <p class="alignLeft" id="leftWords"></p>
-              <p class="alignRight" id="rightWords"></p>
-
-           </div>
-        </div>
-        <div style="padding: 10px;">
-           <input id='textInQuotes'type='checkbox' checked>
-           <label>Don't change text in quotes&nbsp&nbsp</label>
-        </div>
-        <div class="addWord">
-           <button type="button" onClick="addWord();" id="addContraction" style="margin-left:10px;">Add</button>
-           <span class="wordInput"><input type="text" id="wordContracted" value="" style="float:right; margin-right:35px"></span><br>
-           <span class="wordInput"><input type="text" id="wordExtended" value="" style="float:right; margin-right:35px"></span><br>
-           <p id="errorMessage" style="color:red;"></p>
-           
-        </div>
-     </div>
-  
-     <button class="dropDown">Section 2</button>
-     <div class="panel">
-        <p>Lorem ipsum...</p>
-     </div>
-
-     <button class="dropDown">Section 3</button>
-     <div class="panel">
-        <p>Lorem ipsum...</p>
-     </div>
-     <p id="testOutput">  </p>
-    <span class = "bottomBar">
-       <button class="gray" type="button" onClick="cancelSettings();" id="cancelSettings">Cancel</button>
-       <button class="blue" type="button" onClick="confirmSettings();" id="confirmSettings">Save</button>
-       <span id="message"></span>
-    </span>
-    
-    <script>
-    var acc = document.getElementsByClassName("dropDown");
-    var i;
-    for (i = 0; i < acc.length; i++) {
-       acc[i].onclick = function(){
-          /* Toggle between adding and removing the "active" class,
-          to highlight the button that controls the panel */
-          this.classList.toggle("active");
-    
-          /* Toggle between hiding and showing the active panel */
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-             panel.style.display = "none";
-          } 
-          else {
-             panel.style.display = "block";
-          }
-       }
-    }
-    
-    
-    
     displayWords(); 
     loadSettingsCache();
-    
     </script>
   </body>
 </html>

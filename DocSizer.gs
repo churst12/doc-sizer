@@ -77,8 +77,14 @@ function getMargin() {
 
 
 function punctReplace(findMe, fSize) {
+   var pReplace = getPunctReplaceCache();
+   var newFSize = parseInt(fSize) + parseInt(pReplace);
+   punctSet(findMe, newFSize);
+}
+function punctSet(findMe, fSize) {
    var body = DocumentApp.getActiveDocument().getBody();
    var foundElement = body.findText(findMe);
+   var fSize2 = parseInt(fSize);
 
    while (foundElement != null) {
         // Get the text object from the element
@@ -89,7 +95,7 @@ function punctReplace(findMe, fSize) {
         var end = foundElement.getEndOffsetInclusive();
 
         // Change the font size
-        foundText.setFontSize(start, end, fSize);
+        foundText.setFontSize(start, end, fSize2);
 
         // Find the next match
         foundElement = body.findText(findMe, foundElement);
@@ -209,7 +215,6 @@ function lineSpacing(value) {
   var body = DocumentApp.getActiveDocument().getBody();
   var paragraphs = body.getParagraphs();
   for(var i=0; i<paragraphs.length; i++) {
-     //Logger.log(paragraphs[i]);
      paragraphs[i].setLineSpacing(value);
   }
   
@@ -253,13 +258,22 @@ function setOverflowCache(value) {
    cache =  CacheService.getUserCache();
    cache.remove("overflowSpacing");
    cache.put("overflowSpacing", value);
-  
-  
+}
+
+function setPunctReplaceCache(value) {
+   cache =  CacheService.getUserCache();
+   cache.remove("punctReplace");
+   cache.put("punctReplace", value);
 }
 
 function getOverflowCache() {
   cache =  CacheService.getUserCache();
   return cache.get("overflowSpacing"); 
+}
+
+function getPunctReplaceCache() {
+  cache =  CacheService.getUserCache();
+  return cache.get("punctReplace"); 
 }
 
 function periodSpace() {
@@ -279,7 +293,6 @@ function marginSet(side, value) {
      body.setMarginBottom(ptValue);
   }
 }
-
 
 
 
