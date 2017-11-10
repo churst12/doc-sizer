@@ -197,7 +197,6 @@
           var errorElement = document.getElementById("errorMessage");
           var wordShort = document.getElementById("wordContracted").value;
           var wordLong = document.getElementById("wordExtended").value;
-          console.log("wordShort: " + wordShort + "  wordLong: " + wordLong );
           if((wordShort.length == 0) || (wordLong.length == 0 )) {
              errorElement.innerHTML = "*please fill both fields";
              errorElement.style.color = 'red';
@@ -214,12 +213,10 @@
     }
 
     function showShortWords(shortWords) {
-    console.log(shortWords);
        document.getElementById('leftWords').innerHTML = shortWords.join(" <br> ");
     }
     
     function showLongWords(longWords) {
-    console.log(longWords);
        document.getElementById('rightWords').innerHTML = longWords.join(" <br> ");
     }
     
@@ -241,7 +238,6 @@
      function setPunctReplaceCache(value) {
        punctReplaceSize = value;
        if(value === undefined) { punctReplaceSize = 1; }
-       console.log(punctReplaceSize);
        document.getElementById("punctSlider").value = punctReplaceSize;
        document.getElementById("punctSliderValue").innerHTML = punctReplaceSize;
        

@@ -154,13 +154,6 @@ function cancelSettings() {
   
 }
 
-function addWordPrompt() {
-   var html = HtmlService.createHtmlOutputFromFile('AddWord')
-      .setWidth(400)
-      .setHeight(140);
-   DocumentApp.getUi() // Or DocumentApp or FormApp.
-      .showModalDialog(html, ' ');
-}
 
 function getWordsShortArray() {
    var wordsShortValue = CacheService.getUserCache().get("wordsShort");
@@ -291,7 +284,11 @@ function marginSet(side, value) {
   }
 }
 
-
+function showHelp() {
+   var html = HtmlService.createHtmlOutputFromFile('Information').setWidth(600).setHeight(460);
+   DocumentApp.getUi() // Or DocumentApp or FormApp.
+      .showModalDialog(html, ' ');
+}
 
 
 

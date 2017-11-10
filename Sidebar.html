@@ -160,6 +160,14 @@ body > * {
 
 }
 
+#help {
+   float: right; 
+   margin-right:10px; 
+   color: gray; 
+   cursor: pointer;
+
+}
+
 ul li {
     margin-top: 5px;
     padding: 0px;
@@ -319,12 +327,12 @@ ul li {
           -->
           <li>
              <input id='punctReplace'type='checkbox' >
-             <label>Puctuation Replace&nbsp&nbsp</label>
+             <label>Punctuation Sizer&nbsp&nbsp</label>
 
           </li> 
           <li>
              <input id='periodSpace'type='checkbox' >
-             <label>Space after periods&nbsp&nbsp</label>
+             <label>Period Spacer&nbsp&nbsp</label>
 
           </li>
           <li>
@@ -344,7 +352,8 @@ ul li {
     
    <div class='optionsBar'>
       <button class="gray" type="button" onclick="settings();"  id='settingsButton'>  <i class="material-icons">settings</i></button>
-      <button class="blue" type="button" onclick="apply();" id='applyButton'>Apply</button><br>
+      <button class="blue" type="button" onclick="apply();" id='applyButton'>Apply</button>
+      <span><i id='help' onclick="showHelp()" class="material-icons" >help</i></span>
    </div>
    
    <p id="text" > </p>
@@ -423,15 +432,12 @@ function doOverflow(value) {
 function setHiddenWidth(margin) {
    var width = 612;
    width = width - margin;
-   console.log("margin: " + margin);
-   console.log("new width: " + width);
    document.getElementById('hiddenDiv').style.width = width + "pt";
 }
 
 function setHiddenFont(fontArray) {
    var font = fontArray[0];
    var fontSize = fontArray[1];
-   console.log(font);
 }
 
 
@@ -456,9 +462,7 @@ function doLineSpacing(value) {
 
 function doFont() {
    var font = document.getElementById('fontMenu').value;
-   console.log(font);
    var fontSize = document.getElementById('fontSize').value;
-   console.log(fontSize);
    google.script.run.changeFont(font, fontSize);
 
 }
@@ -536,6 +540,10 @@ function switchFontIcon(icon) {
       icon.className = "fa fa-sort-amount-desc";
    }
    return icon.className;
+}
+
+function showHelp() {
+   google.script.run.showHelp();
 }
 
 
