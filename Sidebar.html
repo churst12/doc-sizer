@@ -233,15 +233,15 @@ ul li {
              </div>
              <div class='rightSide' >
                 <div id="slidecontainer">
-                   <span><input id="demo" type="text" value ="1.15" style="width: 50px;"></span>
-                   <input type="range" min="1" max="3" value="1.15" class="slider" id="myRange" step="0.01">
+                   <span><input id="lineSliderOutput" type="text" value ="1.15" style="width: 50px;"></span>
+                   <input type="range" min="1" max="3" value="1.15" class="slider" id="lineSlider" step="0.01">
                     
                 </div>
              </div>
              
              <script>
-                var slider1 = document.getElementById("myRange");
-                var output1 = document.getElementById("demo");
+                var slider1 = document.getElementById("lineSlider");
+                var output1 = document.getElementById("lineSliderOutput");
                 output1.value = slider1.value;
                 
                 slider1.oninput = function() {
@@ -475,23 +475,11 @@ function doBMargin(value) {
       google.script.run.marginSet("bottom", value);
 }
 
-function setOverflowCache(value) { overflow = value; }
-function setPunctReplaceCache(value) { 
-   if(value === undefined) {
-      punctReplaceSize = 1;
-   }
-   else {
-      punctReplaceSize = value; 
-   }
-}
-
 function doChecks(c1, c2, c3, c4, c5) {
    if(c1) { google.script.run.wordExpand(); }
    if(c2) { google.script.run.wordContract(); } 
    doPunctReplace(c4);
    if(c5) { google.script.run.periodSpace(); }
-   //if(c1) { doOverFlow(); }
-
 }
 
 function apply() {
@@ -504,10 +492,10 @@ function apply() {
   var bMarginValue = document.getElementById('bottomMarginValue').value;
   var tMarginValue = document.getElementById('topMarginValue').value;
   doChecks(c1, c2, c3, c4, c5);
-  doFont();
-  doLineSpacing(parseFloat(document.getElementById("myRange").value));
-  doBMargin(bMarginValue);
-  doTMargin(tMarginValue);
+  //doFont();
+  //doLineSpacing(parseFloat(document.getElementById("lineSliderOutput").value));
+  //doBMargin(bMarginValue);
+  //doTMargin(tMarginValue);
      var text = document.getElementById("text");
      text.innerHTML = "Changes Applied.";
   if(5>10) {
@@ -517,6 +505,12 @@ function apply() {
 }
 
 function settings() {
+   var font = document.getElementById("fontMenu").value;
+   var fSize = document.getElementById("fontSize").value;
+   var lSpacing = document.getElementById("lineSliderOutput").value;
+   var tMargin = document.getElementById("topMarginValue").value;
+   var bMargin = document.getElementById("bottomMarginValue").value;
+   google.script.run.setSidebarCache(font, fSize, lSpacing, tMargin, bMargin);
    google.script.run.settingsPage();
 }
 
@@ -545,8 +539,29 @@ function switchFontIcon(icon) {
 function showHelp() {
    google.script.run.showHelp();
 }
+ 
+ function getCache() {
+    google.script.run.withSuccessHandler(setCache).getSidebarCache()
+ }
 
-
+function setCache(sidebarCache) {
+   var font = sidebarCache[0];
+   if(font === null) { return; }
+   var fSize = sidebarCache[1];
+   var lSpacing = sidebarCache[2];
+   var tMargin = sidebarCache[3];
+   var bMargin = sidebarCache[4];
+   
+   document.getElementById('fontMenu').value = font;
+   document.getElementById('fontSize').value = fSize;
+   document.getElementById('lineSliderOutput').value = lSpacing;
+   document.getElementById('lineSlider').value = lSpacing;
+   document.getElementById('topMarginValue').value = tMargin;
+   document.getElementById('topMarginSlider').value = tMargin;
+   document.getElementById('bottomMarginValue').value = bMargin;
+   document.getElementById('bottomMarginSlider').value = bMargin;
+}
+getCache();
 </script>
   </body>
 </html>

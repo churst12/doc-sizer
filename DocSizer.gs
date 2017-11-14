@@ -78,6 +78,10 @@ function getMargin() {
 
 function punctReplace(findMe, fSize) {
    var pReplace = getPunctReplaceCache();
+   if(pReplace === 'null') { 
+     pReplace = 1;
+     setPunctReplaceCache(1);
+   }
    var newFSize = parseInt(fSize) + parseInt(pReplace);
    punctSet(findMe, newFSize);
 }
@@ -290,7 +294,25 @@ function showHelp() {
       .showModalDialog(html, ' ');
 }
 
+function setSidebarCache(font, fSize, lSpacing, tMargin, bMargin)  {
+   cache =  CacheService.getUserCache();
+   cache.put("font", font);
+   cache.put("fSize", fSize);
+   cache.put("lSpacing", lSpacing);
+   cache.put("tMargin", tMargin);
+   cache.put("bMargin", bMargin);
+}
 
+function getSidebarCache() {
+   cache =  CacheService.getUserCache();
+   var sidebarCache = [];
+   sidebarCache.push(cache.get("font"));
+   sidebarCache.push(cache.get("fSize"));
+   sidebarCache.push(cache.get("lSpacing"));
+   sidebarCache.push(cache.get("tMargin"));
+   sidebarCache.push(cache.get("bMargin"));
+   return sidebarCache;
+}
 
 
 
