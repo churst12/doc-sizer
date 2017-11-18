@@ -14,9 +14,7 @@ function onInstall(e) {
 
 function showSidebar() {
   var cache = CacheService.getUserCache();
-  cache.remove("wordsShort");
-  cache.remove("wordsLong");
-  if(CacheService.getUserCache().get("wordsShort") == null) {
+  if(cache.get("wordsShort") == null) {
    
     var wordsShort = "isn’t,aren’t,wasn’t,weren’t,haven’t,hasn’t,hadn’t,won’t,wouldn’t,don’t,doesn’t,didn’t,can’t,couldn’t,shouldn’t,mightn’t,mustn’t,I’m,I’ll,I’d,I’ve,I’d,you’re,you’ll,you’d,you’ve,you’d,he’ll,she’ll,it’s,it’ll,we’re,we’ll,we’ve,they’re,they’ll,they’ve,that’s,that’ll,who’s,who’ll,what’s,where’ll,when’s,when’ll,why’ll,why’d,how’s,how’d,how’ll";
     CacheService.getUserCache().put("wordsShort", wordsShort);
@@ -199,11 +197,7 @@ function addWord(wordShort, wordLong) {
    Logger.log("putting into cache, short length: " + wordShortString.length);
    Logger.log("putting into cache, long length: " + wordLongString.length);
    cache.put("wordsShort", wordShortString);
-   cache
-   
-   
-   
-   .put("wordsLong", wordLongString);
+   cache.put("wordsLong", wordLongString);
 }
 
 function lineSpacing(value) {
